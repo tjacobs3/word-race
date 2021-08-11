@@ -1,0 +1,20 @@
+body {
+  font-family: 'Roboto Slab', serif;
+}
+
+.splash {
+  background: rgb(47,60,50);
+  background: linear-gradient(90deg, rgba(47,60,50,1) 0%, rgba(33,56,29,1) 100%);
+  padding: 3rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    height: 150%;
+    opacity: 20%;
+    top: -20px;
+    transform: rotate(-0.1turn);
+  }
+}

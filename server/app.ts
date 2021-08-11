@@ -1,0 +1,90 @@
+import express, { Request, Response } from 'express';
+import { Server } from "socket.io";
+import http from 'http';
+import cors from 'cors';
+import cookieSession from 'cookie-session';
+
+import RoomClient from './src/rooms/room_client';
+import HoldEmClient from './src/games/holdem/holdem_client';
+
+const app = express();
+const origin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+app.use(express.json());
+app.use(cors({ origin }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['sadfsadfgdg'],
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
+
+const games: { [index: string]: RoomClient; } = {};
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin,
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+app.get('/', (req: Request, res: Response) => {
+  req.session.test = (req.session.test || 0) + 1;
+  res.send('Hello World!  ' + req.session.test);
+});
+
+app.post('/create', (req: Request, res: Response) => {
+  const room = new HoldEmClient(io);
+  games[room.roomCode] = room;
+
+  const player = room.join(req.body.name);
+
+  req.session.games = (req.session.games || {});
+  req.session.games[room.roomCode] = player.id;
+
+  res.json({ roomCode: room.roomCode, other: req.session.games });
+});
+
+app.post('/join', (req: Request, res: Response) => {
+  const roomCode: string = req.body.roomCode;
+  const room = games[roomCode];
+
+  let player;
+  const playerId: string | null  = req.session.games?.[roomCode];
+
+  if (playerId) {
+    player = room.players[playerId]
+  } else {
+    player = room.join(req.body.name);
+    req.session.games = (req.session.games || {});
+    req.session.games[room.roomCode] = player.id;
+  }
+
+  res.json({ playerId: player.id, secret: player.secret });
+});
+
+io
+  .use((socket, next) => {
+    const { playerId, secret, roomCode } = socket.handshake.query;
+
+    if (typeof playerId !== "string" || typeof secret !== "string" || typeof roomCode !== "string") {
+      return next(new Error('Authentication error'));
+    }
+
+    if (games[roomCode]?.players?.[playerId]?.secret !== secret) return next(new Error('Authentication error'));
+
+    next();
+  })
+  .on('connection', (socket) => {
+    const { playerId, roomCode } = socket.handshake.query;
+
+    if (typeof playerId !== "string" || typeof roomCode !== "string") return;
+
+    const game = games[roomCode];
+    game.connect(socket, playerId);
+  })
+
+
+server.listen(3001, () => {
+  console.log('listening on *:3001');
+});
