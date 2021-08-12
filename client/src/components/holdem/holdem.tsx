@@ -7,7 +7,7 @@ import Settings from './settings';
 import ChipValueContext from './contexts/chip_value_context';
 // import Showdown from './holdem/showdown';
 // import AdminControls from './holdem/admin_controls';
-// import InfoPanel from './holdem/info_panel';
+import InfoPanel from './info_panel';
 // import CardTable from './holdem/ui/card_table';
 // import CurrentRoundTable from './holdem/ui/current_round_table';
 
@@ -19,7 +19,8 @@ import {
   ACTION__STAND,
   Player,
   Round,
-  GameSettings
+  GameSettings,
+  PlayerAction
 } from './constants';
 
 import './styles.scss';
@@ -32,7 +33,7 @@ type Props = {
 };
 
 type GameState = {
-  actions?: any[];
+  actions?: PlayerAction;
   dealerId?: string;
   ownerId?: string;
   players: Player[];
@@ -95,12 +96,12 @@ export default class HoldEm extends React.Component<Props, State> {
   sit = () => this.props.socket.emit(ACTION__SIT)
   stand = () => this.props.socket.emit(ACTION__STAND)
 
-  player() {
-    return find(this.state.players, ['playerId', this.props.playerId]) || {};
+  player(): Player | undefined {
+    return find(this.state.players, ['id', this.props.playerId]);
   }
 
-  owner() {
-    return find(this.state.players, ['playerId', this.state.ownerId]) || {};
+  owner(): Player | undefined {
+    return find(this.state.players, ['id', this.state.ownerId]);
   }
 
   isOwner() {
@@ -204,16 +205,16 @@ export default class HoldEm extends React.Component<Props, State> {
             </div>
           </div>
 
-          {/* <InfoPanel
+          <InfoPanel
             actions={this.state.actions}
-            gameSettings={this.state.gameSettings || {}}
-            host={this.owner().playerName || ''}
+            gameSettings={this.state.gameSettings}
+            host={this.owner()?.name || ''}
             roomCode={this.props.roomCode}
             socket={this.props.socket}
-            standing={!!this.player().standing}
+            standing={!!this.player()?.standing}
             onSit={this.sit}
             onStand={this.stand}
-          /> */}
+          />
         </div>
       </ChipValueContext.Provider>
     );

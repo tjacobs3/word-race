@@ -18,6 +18,7 @@ export interface Player {
   id: string;
   name: string;
   chips: number;
+  standing: boolean;
 }
 
 export interface Round {
@@ -28,4 +29,9 @@ export interface GameSettings {
   chipValue: number;
   smallBlindAmount: number;
   bigBlindAmount: number;
+}
+
+export interface PlayerAction {
+  actionList: string[];
+  actionMetadata: any;
 }
