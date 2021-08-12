@@ -50,6 +50,7 @@ export default class HoldEmClient extends RoomClient {
     const player = new TablePlayer(name);
     this.players[player.id] = player;
 
+    if (Object.keys(this.players).length === 1) this.ownerId = player.id;
     this.game.addPlayer(player);
 
     return player;

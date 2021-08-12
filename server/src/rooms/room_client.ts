@@ -27,11 +27,14 @@ export default class RoomClient {
     const player = new Player(name);
     this.players[player.id] = player;
 
+    if (Object.keys(this.players).length === 1) this.ownerId = player.id;
+
     return player;
   }
 
   connect(socket: Socket, playerId: string) {
     const player = this.players[playerId];
+    this.players[playerId].socket = socket;
     socket.join(this.roomCode);
 
     socket.on('chat message', (text: string) => {
