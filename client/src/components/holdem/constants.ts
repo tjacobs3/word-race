@@ -17,6 +17,7 @@ export const ACTION__STAND = 'action_stand';
 export interface Player {
   id: string;
   name: string;
+  chips: number;
 }
 
 export interface Round {
@@ -25,4 +26,6 @@ export interface Round {
 
 export interface GameSettings {
   chipValue: number;
+  smallBlindAmount: number;
+  bigBlindAmount: number;
 }

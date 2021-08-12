@@ -3,7 +3,7 @@ import { Socket } from "socket.io-client";
 import { find } from 'lodash';
 
 // import Player from './holdem/player';
-// import Settings from './holdem/settings';
+import Settings from './settings';
 import ChipValueContext from './contexts/chip_value_context';
 // import Showdown from './holdem/showdown';
 // import AdminControls from './holdem/admin_controls';
@@ -80,7 +80,7 @@ export default class HoldEm extends React.Component<Props, State> {
     })
   };
 
-  updateGameSettings = (gameSettings: { smallBlindAmount: string, bigBlindAmount: string, chipValue: string, }) => {
+  updateGameSettings = (gameSettings: GameSettings) => {
     this.props.socket.emit(ACTION__OWNER_CHANGE_GAME_SETTINGS, gameSettings);
   }
 
@@ -107,7 +107,7 @@ export default class HoldEm extends React.Component<Props, State> {
     return this.props.playerId === this.state.ownerId;
   }
 
-  showSettings() {
+  showSettings(): boolean {
     return this.isOwner() && !!this.state.gameSettings;
   }
 
@@ -181,16 +181,16 @@ export default class HoldEm extends React.Component<Props, State> {
     return (
       <ChipValueContext.Provider value={this.state.gameSettings?.chipValue}>
         <div className="holdem d-flex flex-column">
-          {this.showSettings() &&
+          {this.isOwner() && !!this.state.gameSettings &&
             <React.Fragment>
-              {/* <Settings
+              <Settings
                 gameSettings={this.state.gameSettings}
                 players={this.state.players}
                 roundInProgress={!!this.state.currentRound}
                 onUpdateGameSettings={this.updateGameSettings}
                 onGiveChips={this.giveChipsToPlayer}
                 onTakeChips={this.takeChipsFromPlayer}
-              /> */}
+              />
             </React.Fragment>
           }
           <div className="game-table-container flex-grow-1">
