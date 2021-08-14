@@ -22,7 +22,12 @@ export interface Player {
 }
 
 export interface Round {
-  showdown: boolean;
+  bettingRoundStarted: boolean;
+  showdown?: Showdown;
+}
+
+export interface Showdown {
+  currentActionId: string
 }
 
 export interface GameSettings {

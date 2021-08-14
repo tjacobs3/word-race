@@ -23,7 +23,7 @@ export default function Messages({ socket, messages }: Props) {
 
   useEffect(() => {
     if (messages.length > 0) setUnseenMessages(!show && true);
-  }, [messages]);
+  }, [messages, show]);
 
   const sendMessage = (message: string) => {
     if (message.length < 1) return;

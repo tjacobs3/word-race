@@ -6,7 +6,7 @@ import { find } from 'lodash';
 import Settings from './settings';
 import ChipValueContext from './contexts/chip_value_context';
 // import Showdown from './holdem/showdown';
-// import AdminControls from './holdem/admin_controls';
+import AdminControls from './admin_controls';
 import InfoPanel from './info_panel';
 // import CardTable from './holdem/ui/card_table';
 // import CurrentRoundTable from './holdem/ui/current_round_table';
@@ -196,8 +196,7 @@ export default class HoldEm extends React.Component<Props, State> {
           }
           <div className="game-table-container flex-grow-1">
             {this.props.admin && (
-              null
-              // <AdminControls currentRound={this.state.currentRound} socket={this.props.socket} />
+              <AdminControls currentRound={this.state.currentRound} socket={this.props.socket} />
             )}
 
             <div className="game-table" ref={this.tableElement}>
