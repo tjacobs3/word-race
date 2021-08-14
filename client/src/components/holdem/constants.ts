@@ -24,6 +24,8 @@ export interface Player {
 export interface Round {
   bettingRoundStarted: boolean;
   showdown?: Showdown;
+  pot: number;
+  communityCards?: PlayingCard[];
 }
 
 export interface Showdown {
@@ -39,4 +41,11 @@ export interface GameSettings {
 export interface PlayerAction {
   actionList: string[];
   actionMetadata: any;
+}
+
+export interface PlayingCard {
+  description?: string,
+  suit?: string,
+  sort?: number,
+  facedown?: boolean
 }

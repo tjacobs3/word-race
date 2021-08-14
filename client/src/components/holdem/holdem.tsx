@@ -8,8 +8,8 @@ import ChipValueContext from './contexts/chip_value_context';
 // import Showdown from './holdem/showdown';
 import AdminControls from './admin_controls';
 import InfoPanel from './info_panel';
-// import CardTable from './holdem/ui/card_table';
-// import CurrentRoundTable from './holdem/ui/current_round_table';
+import CardTable from './ui/card_table';
+import CurrentRoundTable from './ui/current_round_table';
 
 import {
   ACTION__OWNER_CHANGE_GAME_SETTINGS,
@@ -158,22 +158,20 @@ export default class HoldEm extends React.Component<Props, State> {
   renderMiddleTable() {
     if (this.state.currentRound) {
       return (
-        null
-        // <CardTable>
-        //   <CurrentRoundTable
-        //     pot={this.state.currentRound.pot}
-        //     cards={this.state.currentRound.communityCards}
-        //   />
-        // </CardTable>
+        <CardTable>
+          <CurrentRoundTable
+            pot={this.state.currentRound.pot}
+            cards={this.state.currentRound.communityCards}
+          />
+        </CardTable>
       );
     } else {
       return (
-        null
-        // <CardTable>
-        //   <h4 className="text-center">
-        //     Waiting on {this.owner().playerName} to start a round.
-        //   </h4>
-        // </CardTable>
+        <CardTable>
+          <h4 className="text-center">
+            Waiting on {this.owner()?.name} to start a round.
+          </h4>
+        </CardTable>
       );
     }
   }

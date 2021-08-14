@@ -9643,6 +9643,11 @@ react-overlays@^5.0.1:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
+react-pokercards@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-pokercards/-/react-pokercards-1.0.1.tgz#72b6149ae3de5e547a56aec3ab0460fba6c9e40a"
+  integrity sha512-pjjsRURNb5Lrbo9TcUoTXpIDF5Ea+Wg7dkh00n/Lys7wWRbbWE5Br2wL80QMGZEPHB02gGguDvoc53hU9M8yPA==
+
 react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
