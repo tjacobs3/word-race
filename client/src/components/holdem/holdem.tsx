@@ -2,7 +2,7 @@ import React from "react";
 import { Socket } from "socket.io-client";
 import { find } from 'lodash';
 
-// import Player from './holdem/player';
+import Player from './player';
 import Settings from './settings';
 import ChipValueContext from './contexts/chip_value_context';
 // import Showdown from './holdem/showdown';
@@ -17,7 +17,7 @@ import {
   ACTION__OWNER_TAKE_CHIPS,
   ACTION__SIT,
   ACTION__STAND,
-  Player,
+  Player as PlayerInterface,
   Round,
   GameSettings,
   PlayerAction
@@ -36,7 +36,7 @@ type GameState = {
   actions?: PlayerAction;
   dealerId?: string;
   ownerId?: string;
-  players: Player[];
+  players: PlayerInterface[];
   currentRound?: Round;
   gameSettings?: GameSettings;
 }
@@ -96,11 +96,11 @@ export default class HoldEm extends React.Component<Props, State> {
   sit = () => this.props.socket.emit(ACTION__SIT)
   stand = () => this.props.socket.emit(ACTION__STAND)
 
-  player(): Player | undefined {
+  player(): PlayerInterface | undefined {
     return find(this.state.players, ['id', this.props.playerId]);
   }
 
-  owner(): Player | undefined {
+  owner(): PlayerInterface | undefined {
     return find(this.state.players, ['id', this.state.ownerId]);
   }
 
@@ -119,21 +119,19 @@ export default class HoldEm extends React.Component<Props, State> {
       // offset so the local player is always bottom center
       const tableIndex = (this.state.players.length + (index - localPlayerIndex)) % this.state.players.length;
 
-      return null;
-
-      // return (
-      //   <Player
-      //     currentRound={this.state.currentRound}
-      //     dealerId={this.state.dealerId}
-      //     key={player.playerId}
-      //     ownerId={this.state.ownerId}
-      //     player={player}
-      //     playerIndex={tableIndex}
-      //     tableHeight={this.state.tableHeight || 0}
-      //     tableWidth={this.state.tableWidth || 0}
-      //     totalPlayers={this.state.players.length}
-      //   />
-      // );
+      return (
+        <Player
+          currentRound={this.state.currentRound}
+          dealerId={this.state.dealerId}
+          key={player.id}
+          ownerId={this.state.ownerId}
+          player={player}
+          playerIndex={tableIndex}
+          tableHeight={this.state.tableHeight || 0}
+          tableWidth={this.state.tableWidth || 0}
+          totalPlayers={this.state.players.length}
+        />
+      );
     });
   }
 

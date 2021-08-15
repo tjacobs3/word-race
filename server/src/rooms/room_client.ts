@@ -51,7 +51,7 @@ export default class RoomClient {
   // }
 
   playerIsConnected(playerId: string): boolean {
-    return !!this.players[playerId]?.socket?.connected;
+    return !!(this.players[playerId]?.socket?.connected || this.players[playerId]?.ai);
   }
 
   canTerminateGame(): boolean {

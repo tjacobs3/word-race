@@ -18,10 +18,24 @@ export interface Player {
   id: string;
   name: string;
   chips: number;
+  connected: boolean;
   standing: boolean;
+  inCurrentRound?: boolean;
+  folded?: boolean;
+  currentBet?: number;
+  hand?: PlayingCard[];
+}
+
+export interface ActionHistoryObject {
+  playerId: string;
+  action: string;
+  data: any;
+  id: number;
 }
 
 export interface Round {
+  actionHistory: ActionHistoryObject[];
+  currentActionId: string;
   bettingRoundStarted: boolean;
   showdown?: Showdown;
   pot: number;
