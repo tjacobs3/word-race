@@ -19,6 +19,10 @@ type State = {
 export default class AnimatedNumber extends React.Component<Props, State> {
   updateInterval?: NodeJS.Timeout;
 
+  state: State = {
+    valueToDisplay: undefined
+  }
+
   componentWillUnmount() {
     if (this.updateInterval) clearInterval(this.updateInterval);
   }
@@ -70,7 +74,8 @@ export default class AnimatedNumber extends React.Component<Props, State> {
     if (!displayVal) return null;
 
     displayVal = hideDecimals ? Math.round(displayVal) : displayVal;
-    displayVal = this.props.formatter?.format(displayVal).replace(/\D00$/, '') || displayVal.toFixed(2);
+    displayVal = this.props.formatter?.format(displayVal).replace(/\D00$/, '') ||
+                 (hideDecimals ? displayVal : displayVal.toFixed(2));
 
     return <span>{displayVal}</span>;
   }
