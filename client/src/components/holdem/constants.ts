@@ -24,6 +24,8 @@ export interface Player {
   folded?: boolean;
   currentBet?: number;
   hand?: PlayingCard[];
+  winnings?: number;
+  handName?: string;
 }
 
 export interface ActionHistoryObject {
@@ -43,7 +45,8 @@ export interface Round {
 }
 
 export interface Showdown {
-  currentActionId: string
+  players: Player[];
+  currentActionId: string;
 }
 
 export interface GameSettings {

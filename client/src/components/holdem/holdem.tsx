@@ -5,7 +5,7 @@ import { find } from 'lodash';
 import Player from './player';
 import Settings from './settings';
 import ChipValueContext from './contexts/chip_value_context';
-// import Showdown from './holdem/showdown';
+import Showdown from './showdown';
 import AdminControls from './admin_controls';
 import InfoPanel from './info_panel';
 import CardTable from './ui/card_table';
@@ -139,8 +139,7 @@ export default class HoldEm extends React.Component<Props, State> {
     if (this.state.currentRound) {
       if (this.state.currentRound.showdown) {
         return (
-          null
-          // <Showdown currentRound={this.state.currentRound} />
+          <Showdown currentRound={this.state.currentRound} />
         );
       }
     }
