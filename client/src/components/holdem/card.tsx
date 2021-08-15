@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import PokerCard from 'react-pokercards'
+import { useDidUpdateEffect } from "../../effects/use_did_update_effect";
 import { PlayingCard } from "./constants";
 
 const CARD_RANK: { [index: string]: number | string } = {
@@ -36,7 +37,7 @@ export default function Card({ slideUp = true, shadow, card }: Props) {
     }
   }, [slideUp]);
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     setFlipping(true);
     const flippingTimeout = setTimeout(() => {
       setFlipping(false);
