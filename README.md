@@ -1,5 +1,5 @@
 # Play Holdem
-In Broswer Multiplayer Holdem Poker
+In Browser Multiplayer Holdem Poker
 
 # To Run
 
