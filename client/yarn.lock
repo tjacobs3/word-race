@@ -9643,10 +9643,11 @@ react-overlays@^5.0.1:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
-react-pokercards@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-pokercards/-/react-pokercards-1.0.1.tgz#72b6149ae3de5e547a56aec3ab0460fba6c9e40a"
-  integrity sha512-pjjsRURNb5Lrbo9TcUoTXpIDF5Ea+Wg7dkh00n/Lys7wWRbbWE5Br2wL80QMGZEPHB02gGguDvoc53hU9M8yPA==
+"react-pokercards@https://github.com/tjacobs3/react-pokercards.git#dist":
+  version "1.1.0"
+  resolved "https://github.com/tjacobs3/react-pokercards.git#e60b0311cdffb6cfa66fdd9e887f52204e72c781"
+  dependencies:
+    react "^16.8.0"
 
 react-refresh@^0.8.3:
   version "0.8.3"
@@ -9756,6 +9757,15 @@ react-transition-group@^4.4.1:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
+    prop-types "^15.6.2"
+
+react@^16.8.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
     prop-types "^15.6.2"
 
 react@^17.0.2:
