@@ -1,7 +1,7 @@
 import Player from "../../rooms/player";
 
 export default class TablePlayer extends Player {
-  #chips: number = 0;
+  #chips: number = 100;
   #standing: boolean = false;
 
   get chips() {
