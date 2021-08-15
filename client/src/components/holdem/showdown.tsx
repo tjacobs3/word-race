@@ -36,7 +36,7 @@ export default class Showdown extends React.Component<Props> {
         <div className="showdown-player-area">
           {this.renderCurrentActionStatus(player.id)}
           <div className="text-center">
-            <strong>{player.id}</strong>
+            <strong>{player.name}</strong>
           </div>
           <div className="mt-2 d-flex justify-content-center">
             {player.hand?.map((card, i) => this.renderCard(card, i))}
