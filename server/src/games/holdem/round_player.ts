@@ -3,7 +3,7 @@ import TablePlayer from "./table_player";
 export default class RoundPlayer {
   #currentBet = 0;
   folded: boolean;
-  hand: [];
+  hand: any[];
   winnings: number;
   takenAction: boolean;
   tablePlayer: TablePlayer;
