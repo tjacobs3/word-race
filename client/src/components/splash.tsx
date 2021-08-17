@@ -1,21 +1,36 @@
 import { Fragment, FunctionComponent, useState } from "react"
-import { Col, Container, Form, Row, Button } from "react-bootstrap"
-import axios from 'axios';
+import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap"
+import axios, { AxiosError } from 'axios';
 import { useHistory } from "react-router-dom";
 
 import logo from '../images/logo.svg';
 
 const Splash:FunctionComponent = () => {
-  const [creatingGame, setCreatingGame] = useState<boolean>(false);
+  const [creatingOrJoiningGame, setCreatingOrJoiningGame] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
+  const [roomCode, setRoomCode] = useState<string>('');
+  const [errors, setErrors] = useState<string[]>([]);
   const history = useHistory();
 
   const createGame = () => {
-    setCreatingGame(true);
+    setCreatingOrJoiningGame(true);
 
     axios.post('http://localhost:3000/create', { name })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
-      .catch(() => setCreatingGame(false));
+      .catch(() => setCreatingOrJoiningGame(false));
+  }
+
+  const joinGame = () => {
+    setCreatingOrJoiningGame(true);
+
+    axios.post('http://localhost:3000/join_room', { name, roomCode })
+      .then((response) => history.push(`/game/${response.data.roomCode}`))
+      .catch((error: Error | AxiosError)=> {
+        if (axios.isAxiosError(error))  {
+          setErrors(error.response?.data?.errors || []);
+        }
+        setCreatingOrJoiningGame(false);
+      });
   }
 
   return (
@@ -28,15 +43,42 @@ const Splash:FunctionComponent = () => {
             <span className="mr-4">just poker.</span>
           </h1>
         </div>
+        {errors.length > 0 && (
+          <div className="text-center">
+            <Alert className="d-inline-block" variant="warning">
+              {errors.map(error => <div key={error}>{error}</div>)}
+            </Alert>
+          </div>
+        )}
       </Container>
       <div className="splash">
         <Container>
           <img src={logo} alt="poker chip" />
           <div className="position-relative">
             <h1 className="mt-0 mb-3 text-center">Join a Room</h1>
-            <form action='/create' method='post'>
-
-            </form>
+            <Row className="justify-content-md-center">
+              <Col className="py-2 py-md-0" md={3}>
+                <Form.Control
+                  type="text"
+                  placeholder="Your Name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </Col>
+              <Col className="py-2 py-md-0" md={3}>
+                <Form.Control
+                  type="text"
+                  placeholder="Room Code"
+                  value={roomCode}
+                  onChange={e => setRoomCode(e.target.value)}
+                />
+              </Col>
+              <Col className="py-2 py-md-0" xs="auto">
+                <Button disabled={creatingOrJoiningGame} variant="light" onClick={joinGame} >
+                  Submit
+                </Button>
+              </Col>
+            </Row>
           </div>
         </Container>
       </div>
@@ -52,7 +94,7 @@ const Splash:FunctionComponent = () => {
             />
           </Col>
           <Col xs="auto">
-            <Button disabled={creatingGame} variant="dark" onClick={createGame} >
+            <Button disabled={creatingOrJoiningGame} variant="dark" onClick={createGame} >
               Submit
             </Button>
           </Col>

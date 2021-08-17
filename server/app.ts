@@ -33,6 +33,22 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!  ' + req.session.test);
 });
 
+app.post('/join_room', (req: Request, res: Response) => {
+  const game = games[req.body.roomCode];
+
+  if (!game) {
+    res.status(404).json({ errors: ["Sorry, we couldn't find a game with that code."]});
+    return;
+  }
+
+  const player = game.join(req.body.name);
+
+  req.session.games = (req.session.games || {});
+  req.session.games[game.roomCode] = player.id;
+
+  res.json({ roomCode: game.roomCode, other: req.session.games });
+});
+
 app.post('/create', (req: Request, res: Response) => {
   const room = new HoldEmClient(io);
   games[room.roomCode] = room;
