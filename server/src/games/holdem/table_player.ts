@@ -24,6 +24,10 @@ export default class TablePlayer extends Player {
     this.#chips += Math.max(amount, 0);
   }
 
+  setChips(amount: number) {
+    this.#chips = Math.max(amount, 0);
+  };
+
   sit() {
     this.#standing = false;
   }
