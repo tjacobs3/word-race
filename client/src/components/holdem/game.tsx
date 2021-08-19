@@ -70,7 +70,7 @@ const Game:FunctionComponent = () => {
             socket={socket}
           />
           <HoldEm
-            admin={true}
+            admin={process.env.NODE_ENV === 'development'}
             roomCode={id}
             playerId={playerId}
             socket={socket}

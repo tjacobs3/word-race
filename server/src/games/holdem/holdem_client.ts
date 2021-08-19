@@ -120,16 +120,18 @@ export default class HoldEmClient extends RoomClient {
     })
 
     this.registerGameAction(socket, ACTION__ADMIN_ADD_AI, () => {
-      for(let i = 0; i < 4; i++) {
-        const name = `AI #${this.game.players.length}`;
-        const player = new TablePlayer(name);
-        player.ai = true;
+      if (process.env.NODE_ENV === 'production') return;
 
-        this.players[player.id] = player;
-        this.game.addPlayer(player);
-      }
+      this.performActionOnOwner(player, () => {
+        for(let i = 0; i < 4; i++) {
+          const name = `AI #${this.game.players.length}`;
+          const player = new TablePlayer(name);
+          player.ai = true;
 
-      this.sendGameState();
+          this.players[player.id] = player;
+          this.game.addPlayer(player);
+        }
+      });
     });
 
     socket.on('disconnect', () => {
