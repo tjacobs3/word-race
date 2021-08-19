@@ -30,7 +30,7 @@ export default function Splash() {
   const createGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post('http://localhost:3000/create', { name })
+    axios.post('/create', { name })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
@@ -38,7 +38,7 @@ export default function Splash() {
   const joinGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post('http://localhost:3000/join_room', { name, roomCode })
+    axios.post('/join_room', { name, roomCode })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
