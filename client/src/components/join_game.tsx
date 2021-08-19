@@ -16,7 +16,7 @@ export default function JoinGame() {
   const joinGame = () => {
     setJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { name, roomCode: id })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { name, roomCode: id }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch((error: Error | AxiosError)=> {
         if (axios.isAxiosError(error))  {

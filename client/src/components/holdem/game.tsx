@@ -19,7 +19,7 @@ const Game:FunctionComponent = () => {
   const [socket, setSocket] = useState<Socket | null>();
 
   useEffect(() => {
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join`, { roomCode: id })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join`, { roomCode: id }, { withCredentials: true })
       .then((response) => {
         setPlayerId(response.data.playerId);
         setSecret(response.data.secret);

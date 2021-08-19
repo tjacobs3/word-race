@@ -11,7 +11,7 @@ const app = express();
 app.enable('trust proxy'); // Needed for heroku
 const origin = process.env.CORS_ORIGIN || 'http://localhost:3000';
 app.use(express.json());
-app.use(cors({ origin }));
+app.use(cors({ origin, credentials: true }));
 
 const cookieOptions: any = {
   name: 'session',

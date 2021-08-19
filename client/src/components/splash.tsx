@@ -30,7 +30,7 @@ export default function Splash() {
   const createGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/create`, { name })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/create`, { name }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
@@ -38,7 +38,7 @@ export default function Splash() {
   const joinGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { name, roomCode })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { name, roomCode }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
