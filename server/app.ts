@@ -8,6 +8,7 @@ import RoomClient from './src/rooms/room_client';
 import HoldEmClient from './src/games/holdem/holdem_client';
 
 const app = express();
+app.enable('trust proxy'); // Needed for heroku
 const origin = process.env.CORS_ORIGIN || 'http://localhost:3000';
 app.use(express.json());
 app.use(cors({ origin }));
@@ -15,7 +16,7 @@ app.use(cors({ origin }));
 const cookieOptions: any = {
   name: 'session',
   keys: [process.env.COOKIE_KEY || 'asdfsadfij'],
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  maxAge: 24 * 60 * 60 * 1000 //  24 hours
 }
 
 if (process.env.NODE_ENV === 'production') {
