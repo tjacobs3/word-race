@@ -11,11 +11,19 @@ const app = express();
 const origin = process.env.CORS_ORIGIN || 'http://localhost:3000';
 app.use(express.json());
 app.use(cors({ origin }));
-app.use(cookieSession({
+
+const cookieOptions: any = {
   name: 'session',
-  keys: ['sadfsadfgdg'],
+  keys: [process.env.COOKIE_KEY || 'asdfsadfij'],
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}));
+}
+
+if (process.env.NODE_ENV === 'production') {
+  cookieOptions.sameSite = 'none';
+  cookieOptions.secure = true;
+}
+
+app.use(cookieSession(cookieOptions));
 
 const games: { [index: string]: RoomClient; } = {};
 
@@ -80,6 +88,7 @@ app.post('/join', (req: Request, res: Response) => {
 
   if (!room) {
     res.status(404).json({ errors: ["Sorry, we couldn't find a game with that code."]});
+    return;
   }
 
   const playerId: string | null  = req.session.games?.[roomCode];
@@ -114,6 +123,6 @@ io
   })
 
 
-server.listen(3001, () => {
+server.listen(process.env.PORT || 3001, () => {
   console.log('listening on *:3001');
 });

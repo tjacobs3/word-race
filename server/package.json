@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon app.ts",
+    "build": "tsc -p .",
+    "start": "node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
