@@ -41,6 +41,12 @@ app.post('/join_room', (req: Request, res: Response) => {
     return;
   }
 
+  const nameValidity = game.checkNameValidity(req.body.name || '');
+  if (typeof nameValidity === 'string') {
+    res.status(422).json({ errors: [nameValidity]});
+    return;
+  }
+
   const player = game.join(req.body.name);
 
   req.session.games = (req.session.games || {});
@@ -50,6 +56,13 @@ app.post('/join_room', (req: Request, res: Response) => {
 });
 
 app.post('/create', (req: Request, res: Response) => {
+  const nameValidity = RoomClient.checkNameValidity(req.body.name);
+
+  if (typeof nameValidity === 'string') {
+    res.status(422).json({ errors: [nameValidity]});
+    return;
+  }
+
   const room = new HoldEmClient(io);
   games[room.roomCode] = room;
 
@@ -65,15 +78,15 @@ app.post('/join', (req: Request, res: Response) => {
   const roomCode: string = req.body.roomCode;
   const room = games[roomCode];
 
-  let player;
-  const playerId: string | null  = req.session.games?.[roomCode];
+  if (!room) {
+    res.status(404).json({ errors: ["Sorry, we couldn't find a game with that code."]});
+  }
 
-  if (playerId) {
-    player = room.players[playerId]
-  } else {
-    player = room.join(req.body.name);
-    req.session.games = (req.session.games || {});
-    req.session.games[room.roomCode] = player.id;
+  const playerId: string | null  = req.session.games?.[roomCode];
+  const player = room.players[playerId]
+
+  if (!player) {
+    res.status(422).json({ errors: ["You haven't joined this game"]});
   }
 
   res.json({ playerId: player.id, secret: player.secret });

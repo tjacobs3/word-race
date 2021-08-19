@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { FunctionComponent, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import io, { Socket } from 'socket.io-client';
+import { useHistory } from "react-router-dom";
 
 import Messages, { Message } from "../room/messages";
 import HoldEm from './holdem';
@@ -10,6 +11,7 @@ import '../room.scss';
 import './styles.scss';
 
 const Game:FunctionComponent = () => {
+  const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const [playerId, setPlayerId] = useState<string | null>();
   const [secret, setSecret] = useState<string | null>();
@@ -21,6 +23,17 @@ const Game:FunctionComponent = () => {
       .then((response) => {
         setPlayerId(response.data.playerId);
         setSecret(response.data.secret);
+      })
+      .catch((error: Error | AxiosError)=> {
+        if (!axios.isAxiosError(error)) return;
+
+        if (error.response?.status === 404) {
+          history.replace('/', { notFound: id });
+        }
+
+        if (error.response?.status === 422) {
+          history.replace(`/join/${id}`, { notFound: id });
+        }
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

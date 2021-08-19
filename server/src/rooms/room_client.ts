@@ -1,4 +1,4 @@
-import { every } from 'lodash';
+import { every, some } from 'lodash';
 import { customAlphabet } from 'nanoid';
 import { Server, Socket } from "socket.io";
 
@@ -76,6 +76,19 @@ export default class RoomClient {
 
   sendSystemMessage(text: string) {
     this.emitToRoom('chat message', { playerName: "SYSTEM", text });
+  }
+
+  checkNameValidity(name: string): boolean | string {
+    if (some(this.players, (player) => player.name === name)) return "Name is already taken";
+
+    return RoomClient.checkNameValidity(name);
+  }
+
+  static checkNameValidity(name: string): boolean | string {
+    if (name.length < 3) return "Name is too short";
+    if (name.length > 12) return "Name is too long";
+
+    return true;
   }
 }
 

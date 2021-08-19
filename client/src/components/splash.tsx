@@ -1,23 +1,38 @@
 import { Fragment, FunctionComponent, useState } from "react"
 import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import logo from '../images/logo.svg';
+import SplashHeader from "./splash_header";
 
 const Splash:FunctionComponent = () => {
+  const history = useHistory();
+  const location = useLocation<{ notFound?: string }>();
+  let initialErrors: string[] = [];
+
+  if (location.state?.notFound) {
+    initialErrors = [`Sorry, we could not find a game with that code (${location.state.notFound}).`]
+  }
+
   const [creatingOrJoiningGame, setCreatingOrJoiningGame] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [roomCode, setRoomCode] = useState<string>('');
-  const [errors, setErrors] = useState<string[]>([]);
-  const history = useHistory();
+  const [errors, setErrors] = useState<string[]>(initialErrors);
+
+  const handleError = (error: Error | AxiosError) => {
+    if (axios.isAxiosError(error))  {
+      setErrors(error.response?.data?.errors || []);
+    }
+    setCreatingOrJoiningGame(false);
+  }
 
   const createGame = () => {
     setCreatingOrJoiningGame(true);
 
     axios.post('http://localhost:3000/create', { name })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
-      .catch(() => setCreatingOrJoiningGame(false));
+      .catch(handleError);
   }
 
   const joinGame = () => {
@@ -25,32 +40,12 @@ const Splash:FunctionComponent = () => {
 
     axios.post('http://localhost:3000/join_room', { name, roomCode })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
-      .catch((error: Error | AxiosError)=> {
-        if (axios.isAxiosError(error))  {
-          setErrors(error.response?.data?.errors || []);
-        }
-        setCreatingOrJoiningGame(false);
-      });
+      .catch(handleError);
   }
 
   return (
     <Fragment>
-      <Container>
-        <div className="px-3 py-5 mx-auto text-center">
-          <h1 className="display-4">
-            <span className="mr-4">no signup.</span>
-            <span className="mr-4">no ads.</span>
-            <span className="mr-4">just poker.</span>
-          </h1>
-        </div>
-        {errors.length > 0 && (
-          <div className="text-center">
-            <Alert className="d-inline-block" variant="warning">
-              {errors.map(error => <div key={error}>{error}</div>)}
-            </Alert>
-          </div>
-        )}
-      </Container>
+      <SplashHeader errors={errors} />
       <div className="splash">
         <Container>
           <img src={logo} alt="poker chip" />

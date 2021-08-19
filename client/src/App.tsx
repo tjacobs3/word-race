@@ -8,6 +8,7 @@ import Splash from './components/splash';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
 import Game from './components/holdem/game';
+import JoinGame from './components/join_game';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
       <Switch>
         <Route path="/game/:id">
           <Game />
+        </Route>
+        <Route path="/join/:id">
+          <JoinGame />
         </Route>
         <Route path="/">
           <Splash />
