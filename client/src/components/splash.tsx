@@ -1,12 +1,12 @@
-import { Fragment, FunctionComponent, useState } from "react"
-import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap"
+import { Fragment, useState } from "react"
+import { Col, Container, Form, Row, Button } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
 
 import logo from '../images/logo.svg';
 import SplashHeader from "./splash_header";
 
-const Splash:FunctionComponent = () => {
+export default function Splash() {
   const history = useHistory();
   const location = useLocation<{ notFound?: string }>();
   let initialErrors: string[] = [];
@@ -98,4 +98,3 @@ const Splash:FunctionComponent = () => {
     </Fragment>
   );
 }
-export default Splash

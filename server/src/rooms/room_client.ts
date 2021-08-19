@@ -4,7 +4,7 @@ import { Server, Socket } from "socket.io";
 
 import Player from './player';
 
-const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 5);
+const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 5);
 
 export default class RoomClient {
   server: Server;

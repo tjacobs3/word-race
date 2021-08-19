@@ -34,7 +34,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.post('/join_room', (req: Request, res: Response) => {
-  const game = games[req.body.roomCode];
+  const game = games[(req.body.roomCode || '').toUpperCase()];
 
   if (!game) {
     res.status(404).json({ errors: ["Sorry, we couldn't find a game with that code."]});
@@ -75,7 +75,7 @@ app.post('/create', (req: Request, res: Response) => {
 });
 
 app.post('/join', (req: Request, res: Response) => {
-  const roomCode: string = req.body.roomCode;
+  const roomCode: string = (req.body.roomCode || '').toUpperCase();
   const room = games[roomCode];
 
   if (!room) {
