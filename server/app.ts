@@ -37,6 +37,18 @@ const io = new Server(server, {
   }
 });
 
+function terminateGameLater(roomCode) {
+  setTimeout(() => terminateGame(roomCode), 10000);
+}
+
+function terminateGame(roomCode) {
+  if (!games[roomCode]) return;
+
+  if (games[roomCode].canTerminateGame()) {
+    delete games[roomCode];
+  }
+}
+
 app.get('/', (req: Request, res: Response) => {
   req.session.test = (req.session.test || 0) + 1;
   res.send('Hello World!  ' + req.session.test);
@@ -97,6 +109,7 @@ app.post('/join', (req: Request, res: Response) => {
 
   if (!player) {
     res.status(422).json({ errors: ["You haven't joined this game"]});
+    return;
   }
 
   res.json({ playerId: player.id, secret: player.secret });
@@ -121,6 +134,10 @@ io
 
     const game = games[roomCode];
     game.connect(socket, playerId);
+
+    socket.on('disconnect', () => {
+      terminateGameLater(roomCode);
+    });
   })
 
 
