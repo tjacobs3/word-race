@@ -2,6 +2,7 @@ import { Fragment, useState } from "react"
 import { Col, Container, Form, Row, Button } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
+import GitHubButton from 'react-github-btn';
 
 import logo from '../images/logo.svg';
 import SplashHeader from "./splash_header";
@@ -44,57 +45,65 @@ export default function Splash() {
   }
 
   return (
-    <Fragment>
-      <SplashHeader errors={errors} />
-      <div className="splash">
-        <Container>
-          <img src={logo} alt="poker chip" />
-          <div className="position-relative">
-            <h1 className="mt-0 mb-3 text-center">Join a Room</h1>
-            <Row className="justify-content-md-center">
-              <Col className="py-2 py-md-0" md={3}>
-                <Form.Control
-                  type="text"
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </Col>
-              <Col className="py-2 py-md-0" md={3}>
-                <Form.Control
-                  type="text"
-                  placeholder="Room Code"
-                  value={roomCode}
-                  onChange={e => setRoomCode(e.target.value)}
-                />
-              </Col>
-              <Col className="py-2 py-md-0" xs="auto">
-                <Button disabled={creatingOrJoiningGame} variant="light" onClick={joinGame} >
-                  Submit
-                </Button>
-              </Col>
-            </Row>
-          </div>
+    <div className="splash">
+      <div className="content">
+        <SplashHeader errors={errors} />
+        <div className="hero-bg">
+          <Container>
+            <img src={logo} alt="poker chip" />
+            <div className="position-relative">
+              <h1 className="mt-0 mb-3 text-center">Join a Room</h1>
+              <Row className="justify-content-md-center">
+                <Col className="py-2 py-md-0" md={3}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                  />
+                </Col>
+                <Col className="py-2 py-md-0" md={3}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Room Code"
+                    value={roomCode}
+                    onChange={e => setRoomCode(e.target.value)}
+                  />
+                </Col>
+                <Col className="py-2 py-md-0" xs="auto">
+                  <Button disabled={creatingOrJoiningGame} variant="light" onClick={joinGame} >
+                    Submit
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </Container>
+        </div>
+        <Container className="pb-4">
+          <h2 className="mt-3 text-center py-3">Or Host a New Room</h2>
+          <Row className="justify-content-md-center">
+            <Col className="py-2 py-md-0" md={3}>
+              <Form.Control
+                type="text"
+                placeholder="Your Name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </Col>
+            <Col xs="auto">
+              <Button disabled={creatingOrJoiningGame} variant="dark" onClick={createGame} >
+                Submit
+              </Button>
+            </Col>
+          </Row>
         </Container>
       </div>
-      <Container className="pb-4">
-        <h2 className="mt-3 text-center py-3">Or Host a New Room</h2>
-        <Row className="justify-content-md-center">
-          <Col className="py-2 py-md-0" md={3}>
-            <Form.Control
-              type="text"
-              placeholder="Your Name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-          </Col>
-          <Col xs="auto">
-            <Button disabled={creatingOrJoiningGame} variant="dark" onClick={createGame} >
-              Submit
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    </Fragment>
+      <div className="footer pb-2">
+        <div className="github-button text-center">
+          <div className="mb-2"><small>View this project on Github</small></div>
+          <GitHubButton href="https://github.com/tjacobs3/holdem" data-size="large" data-show-count="true" aria-label="Star tjacobs3/holdem on GitHub">Star</GitHubButton>
+        </div>
+      </div>
+    </div>
   );
 }

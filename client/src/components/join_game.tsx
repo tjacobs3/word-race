@@ -29,7 +29,7 @@ export default function JoinGame() {
   return (
     <Fragment>
       <SplashHeader errors={errors} />
-      <div className="splash">
+      <div className="hero-bg">
         <Container>
           <img src={logo} alt="poker chip" />
           <div className="position-relative">
