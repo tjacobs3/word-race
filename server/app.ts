@@ -9,7 +9,7 @@ import HoldEmClient from './src/games/holdem/holdem_client';
 
 const app = express();
 app.enable('trust proxy'); // Needed for heroku
-const origin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const origin = process.env.CORS_ORIGIN?.split(',') || 'http://localhost:3000';
 app.use(express.json());
 app.use(cors({ origin, credentials: true }));
 
