@@ -5,7 +5,7 @@ import cors from 'cors';
 import cookieSession from 'cookie-session';
 
 import RoomClient from './src/rooms/room_client';
-import HoldEmClient from './src/games/holdem/holdem_client';
+import WordRaceClient from './src/games/word_race/word_race_client';
 
 const app = express();
 app.enable('trust proxy'); // Needed for heroku
@@ -84,7 +84,7 @@ app.post('/create', (req: Request, res: Response) => {
     return;
   }
 
-  const room = new HoldEmClient(io);
+  const room = new WordRaceClient(io);
   games[room.roomCode] = room;
 
   const player = room.join(req.body.name);

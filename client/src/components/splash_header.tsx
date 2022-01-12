@@ -11,7 +11,7 @@ export default function SplashHeader({ errors }: Props) {
         <h1 className="display-4">
           <span className="mr-4">no signup.</span>
           <span className="mr-4">no ads.</span>
-          <span className="mr-4">just poker.</span>
+          <span className="mr-4">just words.</span>
         </h1>
       </div>
       {errors.length > 0 && (

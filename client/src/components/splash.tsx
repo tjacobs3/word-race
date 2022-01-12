@@ -2,9 +2,7 @@ import { Fragment, useState } from "react"
 import { Col, Container, Form, Row, Button } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
-import GitHubButton from 'react-github-btn';
 
-import logo from '../images/logo.svg';
 import SplashHeader from "./splash_header";
 
 export default function Splash() {
@@ -50,7 +48,6 @@ export default function Splash() {
         <SplashHeader errors={errors} />
         <div className="hero-bg">
           <Container>
-            <img src={logo} alt="poker chip" />
             <div className="position-relative">
               <h1 className="mt-0 mb-3 text-center">Join a Room</h1>
               <Row className="justify-content-md-center">
@@ -97,12 +94,6 @@ export default function Splash() {
             </Col>
           </Row>
         </Container>
-      </div>
-      <div className="footer pb-2">
-        <div className="github-button text-center">
-          <div className="mb-2"><small>View this project on Github</small></div>
-          <GitHubButton href="https://github.com/tjacobs3/holdem" data-size="large" data-show-count="true" aria-label="Star tjacobs3/holdem on GitHub">Star</GitHubButton>
-        </div>
       </div>
     </div>
   );
