@@ -15,6 +15,7 @@ type Props = {
 
 export default function WordInput({ previousGuesses, wordLength, onSubmit }: Props) {
   const [word, setWord] = useState('');
+  const [couldNotSubmit, setCouldNotSubmit] = useState(false);
 
   const handleUserKeyPress = useCallback((event:KeyboardEvent) => {
     const { key, keyCode } = event;
@@ -24,6 +25,9 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
         if (word.length === wordLength) {
           onSubmit(word);
           setWord('');
+        } else {
+          setCouldNotSubmit(true);
+          setTimeout(() => setCouldNotSubmit(false), 1000);
         }
         break;
       case DELETE:
@@ -50,6 +54,7 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
 
   return (
     <WordGrid
+      couldNotSubmit={couldNotSubmit}
       previousGuesses={previousGuesses.concat([currentGuess])}
       wordLength={wordLength}
     />

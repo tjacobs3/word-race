@@ -32,3 +32,27 @@
   }
 }
 
+.head-shake {
+  animation: headshake 1s;
+}
+
+@keyframes headshake {
+  0% {
+    transform: translateX(0);
+  }
+  7% {
+    transform: translateX(-6px) rotateY(-9deg);
+  }
+  19% {
+    transform: translateX(5px) rotateY(7deg);
+  }
+  32% {
+    transform: translateX(-3px) rotateY(-5deg);
+  }
+  44% {
+    transform: translateX(2px) rotateY(3deg);
+  }
+  50% {
+    transform: translateX(0);
+  }
+}
