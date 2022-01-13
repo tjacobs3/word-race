@@ -1,3 +1,5 @@
+import Tile from './tile';
+
 type Props = {
   wordLength: number;
   content?: string;
@@ -10,12 +12,9 @@ export default function Row({ content, wordLength }: Props) {
     const letter = (content || '')[i];
 
     tiles.push(
-      <div className="cell mx-1" key={`${i}${letter}`}>
-        {letter}
-      </div>
+      <Tile letter={letter} key={`${i}${letter}`} />
     );
   }
-
 
   return (
     <div className="my-2 d-flex">
