@@ -3,6 +3,9 @@ import { Socket } from "socket.io-client";
 import { ACTION__START_GAME, ACTION__SUBMIT_GUESS } from "./constants";
 import WordInput from "./word_input";
 
+import './styles.scss';
+
+
 type Props = {
   admin: boolean;
   playerId: string;
@@ -34,12 +37,9 @@ export default class WordRace extends React.Component<Props, GameState> {
   }
 
   renderPlayer = (player: Player) => {
-    const guesses: string[] = this.state.game?.guesses[player.id] || [];
-
     return (
       <div key={player.id}>
         <div><strong>{player.name}</strong></div>
-        {guesses.map(guess => <div key={guess}>{guess}</div>)}
       </div>
     )
   }
@@ -59,12 +59,18 @@ export default class WordRace extends React.Component<Props, GameState> {
       );
     }
 
-    return <WordInput onSubmit={this.submitGuess} />
+    return (
+      <WordInput
+        wordLength={5}
+        previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
+        onSubmit={this.submitGuess}
+      />
+    );
   }
 
   render() {
     return (
-      <div>
+      <div className="d-flex justify-content-center flex-column align-items-center">
         {this.state.players.map(this.renderPlayer)}
         {this.renderControls()}
       </div>

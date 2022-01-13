@@ -4,6 +4,7 @@ export default class WordRace {
   players: Player[];
   currentWord: string;
   guesses: { [index: string]: string[]; }
+  numGuesses: 5;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
@@ -20,6 +21,6 @@ export default class WordRace {
   }
 
   setNewWord() {
-    this.currentWord = Math.random().toString(36).substr(4, 6);
+    this.currentWord = Math.random().toString(36).substr(5, 5)
   }
 }

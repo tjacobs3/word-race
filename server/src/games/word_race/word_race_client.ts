@@ -67,7 +67,8 @@ export default class WordRaceClient extends RoomClient {
 
     if (this.game) {
       serializedGame.game = {
-        guesses: this.game.guesses
+        guesses: this.game.guesses,
+        numGuesses: this.game.numGuesses
       }
     }
 

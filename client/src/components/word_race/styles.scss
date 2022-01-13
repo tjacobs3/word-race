@@ -1,0 +1,12 @@
+.game-grid {
+  .cell {
+    display: inline-flex;
+    width: 62px;
+    height: 62px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+}
