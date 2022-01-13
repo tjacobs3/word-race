@@ -1,6 +1,10 @@
 import React from "react";
 import { Socket } from "socket.io-client";
-import { ACTION__START_GAME, ACTION__SUBMIT_GUESS } from "./constants";
+import {
+    ACTION__START_GAME,
+    ACTION__SUBMIT_GUESS,
+    Guesses
+  } from "./constants";
 import WordInput from "./word_input";
 
 import './styles.scss';
@@ -17,8 +21,6 @@ type Player = {
   id: string;
   name: string;
 }
-
-type Guesses = { [index: string]: string[]; }
 
 type GameState = {
   players: Player[];
@@ -70,9 +72,11 @@ export default class WordRace extends React.Component<Props, GameState> {
 
   render() {
     return (
-      <div className="d-flex justify-content-center flex-column align-items-center">
-        {this.state.players.map(this.renderPlayer)}
-        {this.renderControls()}
+      <div className="game">
+        <div className="d-flex justify-content-center flex-column align-items-center">
+          {this.state.players.map(this.renderPlayer)}
+          {this.renderControls()}
+        </div>
       </div>
     );
   }

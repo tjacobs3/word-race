@@ -1,12 +1,34 @@
+.game {
+  background-color: #222222;
+  color: #ffffff;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+}
+
 .game-grid {
   .cell {
     display: inline-flex;
     width: 62px;
     height: 62px;
-    border: 1px solid black;
+    border: 1px solid #646464;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
     text-transform: uppercase;
+    color: #fafafa;
+
+    &.wrong-spot {
+      background-color: #a28822;
+    }
+
+    &.correct {
+      background-color: #4a9a51;
+    }
+
+    &.incorrect {
+      background-color: #4c4c4c;
+    }
   }
 }
+

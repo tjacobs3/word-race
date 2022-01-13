@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import WordGrid from './word_grid';
+import { LetterGuess } from "./constants";
 
 const DELETE = 46;
 const BACKSPACE = 8;
@@ -9,7 +10,7 @@ const ENTER = 13;
 type Props = {
   onSubmit: (word: string) => void;
   wordLength: number;
-  previousGuesses: string[];
+  previousGuesses: LetterGuess[][];
 }
 
 export default function WordInput({ previousGuesses, wordLength, onSubmit }: Props) {
@@ -45,9 +46,11 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
     };
   }, [handleUserKeyPress]);
 
+  const currentGuess = word.split('').map(letter => ({ letter }));
+
   return (
     <WordGrid
-      previousGuesses={previousGuesses.concat(word)}
+      previousGuesses={previousGuesses.concat([currentGuess])}
       wordLength={wordLength}
     />
   );

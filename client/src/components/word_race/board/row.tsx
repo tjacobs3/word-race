@@ -1,18 +1,17 @@
+import { LetterGuess } from '../constants';
 import Tile from './tile';
 
 type Props = {
   wordLength: number;
-  content?: string;
+  content?: LetterGuess[];
 }
 
 export default function Row({ content, wordLength }: Props) {
   const tiles = [];
 
   for(let i = 0; i < wordLength; i++) {
-    const letter = (content || '')[i];
-
     tiles.push(
-      <Tile letter={letter} key={`${i}${letter}`} />
+      <Tile letter={content?.[i]} key={i} />
     );
   }
 
