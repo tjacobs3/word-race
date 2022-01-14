@@ -60,6 +60,17 @@
   }
 }
 
+.previous-words {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transform: translateX(100%) translateX(30px);
+
+  .previous-word {
+    font-size: 1.1rem;
+  }
+}
+
 .player-card {
   display: flex;
   width: 350px;

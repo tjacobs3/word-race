@@ -85,7 +85,8 @@ export default class WordRaceClient extends RoomClient {
         scores: this.game.scores,
         nextWordAt: this.game.nextWordAt?.toJSON(),
         roundEndAt: this.game.roundEndAt?.toJSON(),
-        gameEnded: this.game.gameEnded
+        gameEnded: this.game.gameEnded,
+        previousWords: this.game.previousWords
       }
     }
 

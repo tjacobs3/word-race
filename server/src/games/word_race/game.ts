@@ -21,12 +21,14 @@ export default class WordRace {
   activeTimer: NodeJS.Timeout | undefined;
   gameEnded: boolean;
   showGameEnd: boolean;
+  previousWords: string[];
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
     this.scores = {};
     this.gameEnded = false;
     this.numGuesses = 6;
+    this.previousWords = [];
     this.setNewWord();
     this.onGameAutoUpdated = onGameAutoUpdated;
   }
@@ -126,6 +128,7 @@ export default class WordRace {
   private endRound() {
     this.nextWordAt = null;
     this.roundEndAt = null;
+    this.previousWords.push(this.currentWord);
 
     if (this.anyPlayerWon()) {
       this.gameEnded = true;

@@ -21,6 +21,7 @@ export type GameState = {
     scores: { [index: string]: number },
     nextWordAt: string | undefined,
     roundEndAt: string | undefined,
-    gameEnded: boolean
+    gameEnded: boolean,
+    previousWords: string[],
   };
 }

@@ -12,6 +12,7 @@ import ScoreBoard from "./score_board";
 import CountDown from "./score_board/count_down";
 import PlayerList from "./ui/player_list";
 import GameEnd from "./ui/game_end";
+import PreviousWords from "./score_board/previous_words";
 
 type Props = {
   admin: boolean;
@@ -72,6 +73,7 @@ export default class WordRace extends React.Component<Props, GameState> {
       <React.Fragment>
         <ScoreBoard gameState={this.state} />
         <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
+        <PreviousWords previousWords={this.state.game.previousWords} />
         <WordInput
           wordLength={5}
           previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
