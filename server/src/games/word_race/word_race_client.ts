@@ -11,11 +11,20 @@ import {
   LetterGuess
 } from './constants';
 
+const MAX_PLAYERS = 6;
+
 export default class WordRaceClient extends RoomClient {
   game?: WordRace;
 
   constructor(server: Server) {
     super(server);
+  }
+
+  canJoin(): boolean | string {
+    if (this.game) return 'Sorry, this game has already been started.';
+    if (Object.keys(this.players).length >= MAX_PLAYERS) return 'Sorry, this game is full.'
+
+    return true;
   }
 
   connect(socket: Socket, playerId: string) {

@@ -62,6 +62,12 @@ app.post('/join_room', (req: Request, res: Response) => {
     return;
   }
 
+  const canJoinResult = game.canJoin();
+  if (typeof canJoinResult === 'string') {
+    res.status(422).json({ errors: [canJoinResult]});
+    return;
+  }
+
   const nameValidity = game.checkNameValidity(req.body.name || '');
   if (typeof nameValidity === 'string') {
     res.status(422).json({ errors: [nameValidity]});

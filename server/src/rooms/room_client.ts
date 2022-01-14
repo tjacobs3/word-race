@@ -19,6 +19,10 @@ export default class RoomClient {
     this.players = {};
   }
 
+  canJoin(): boolean | string {
+    return true;
+  }
+
   nameFor(playerId: string): string {
     return this.players[playerId].name;
   }
