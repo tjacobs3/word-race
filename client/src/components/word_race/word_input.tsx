@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import WordGrid from './word_grid';
-import { LetterGuess } from "./constants";
+import { CORRECT, LetterGuess } from "./constants";
+import { every, find } from 'lodash';
 
 const DELETE = 46;
 const BACKSPACE = 8;
@@ -17,8 +18,13 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
   const [word, setWord] = useState('');
   const [couldNotSubmit, setCouldNotSubmit] = useState(false);
 
+  const isFinished = !!find(previousGuesses, (guess) => {
+    return every(guess, ({ result }) => result === CORRECT);
+  });
+
   const handleUserKeyPress = useCallback((event:KeyboardEvent) => {
     const { key, keyCode } = event;
+    if (isFinished) return;
 
     switch (keyCode) {
       case ENTER:
@@ -37,11 +43,11 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
       default:
         if (word.length >= wordLength) return;
 
-        if(keyCode === 32 || (keyCode >= 65 && keyCode <= 90)){
+        if(keyCode >= 65 && keyCode <= 90) {
           setWord(`${word}${key}`);
         }
     }
-  }, [wordLength, word, onSubmit]);
+  }, [wordLength, word, onSubmit, isFinished]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleUserKeyPress);

@@ -54,10 +54,10 @@ export default class WordRace extends React.Component<Props, GameState> {
   render() {
     return (
       <div className="game">
-        <div className="d-flex justify-content-center flex-column align-items-center">
+        <div className="d-flex justify-content-center flex-column align-items-center mt-5">
           <div className="game-grid position-relative">
             <ScoreBoard gameState={this.state} />
-            <CountDown nextWordAt={this.state.game?.nextWordAt} />
+            <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
             {this.renderControls()}
           </div>
         </div>

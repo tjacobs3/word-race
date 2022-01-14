@@ -20,7 +20,7 @@ export default function Timer({ toTime }: Props) {
       setTimeLeft(calculateTimeLeft());
     }, 250);
     return () => clearInterval(interval);
-  }, []);
+  }, [toTime]);
 
   return (
     <div>{timeLeft + 1}</div>

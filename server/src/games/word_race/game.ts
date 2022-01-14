@@ -2,6 +2,7 @@ import Player from "../../rooms/player";
 import { every } from 'lodash';
 import { LetterGuess } from "./constants";
 import GuessAnalyzer, { isCorrect } from './guess_analyzer';
+import { msFromNow } from "../../helpers/time_helpers";
 
 const CATCH_UP_TIMER = 30 * 1000;
 const NEW_ROUND_TIMER = 3 * 1000;
@@ -15,6 +16,7 @@ export default class WordRace {
   onGameAutoUpdated: () => void;
   nextWordAt: Date | undefined;
   roundEndAt: Date | undefined;
+  activeTimer: NodeJS.Timeout | undefined;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
@@ -40,7 +42,11 @@ export default class WordRace {
   private scoreGuess(player: Player) {
     if (isCorrect(this.guessesForPlayer(player))) this.addScore(player, 2);
 
-    if (this.allPlayersFinished()) this.startNewRoundInTime(NEW_ROUND_TIMER);
+    if (this.allPlayersFinished()) {
+      this.startNewRoundLater();
+    } else if(this.isPlayerFinished(player)) {
+      this.endRoundLater();
+    }
   }
 
   private allPlayersFinished(): boolean {
@@ -60,13 +66,36 @@ export default class WordRace {
     this.scores[player.id] = (this.scores[player.id] || 0) + points;
   }
 
-  private startNewRoundInTime(timer: number) {
-    const currentDateObj = new Date();
-    const numberOfMlSeconds = currentDateObj.getTime();
-    const addMlSeconds = timer;
-    this.nextWordAt = new Date(numberOfMlSeconds + addMlSeconds);
+  private endRoundLater() {
+    if (this.roundEndAt) return;
 
-    setTimeout(this.startNewRound.bind(this), timer);
+    this.nextWordAt = null;
+    this.roundEndAt = msFromNow(CATCH_UP_TIMER);
+
+    this.startTimer(CATCH_UP_TIMER, this.endRound.bind(this));
+  }
+
+  private startNewRoundLater() {
+    if (this.nextWordAt) return;
+
+    this.nextWordAt = msFromNow(NEW_ROUND_TIMER);
+    this.roundEndAt = null;
+
+    this.startTimer(NEW_ROUND_TIMER, this.startNewRound.bind(this));
+  }
+
+  private startTimer(timer: number, callback: () => void) {
+    clearTimeout(this.activeTimer);
+
+    this.activeTimer = setTimeout(callback, timer);
+  }
+
+  private endRound() {
+    this.nextWordAt = null;
+    this.roundEndAt = null;
+
+    this.startNewRoundLater();
+    this.onGameAutoUpdated();
   }
 
   private startNewRound() {
