@@ -1,7 +1,7 @@
 import Player from "../../rooms/player";
-import { every, filter, find } from 'lodash';
+import { every, filter, find, max } from 'lodash';
 import { LetterGuess } from "./constants";
-import GuessAnalyzer, { isCorrect } from './guess_analyzer';
+import GuessAnalyzer, { isCorrect, numCorrectLetters } from './guess_analyzer';
 import { msFromNow } from "../../helpers/time_helpers";
 import { generateWord, wordIsValid } from "../../helpers/word_helpers";
 
@@ -59,6 +59,17 @@ export default class WordRace {
     } else if(this.isPlayerFinished(player)) {
       this.endRoundLater();
     }
+  }
+
+  private allPlayersWrong(): boolean {
+    return every(this.players, player => !isCorrect(this.guessesForPlayer(player)));
+  }
+
+  private playersWithMostCorrectLetters(): Player[] {
+    const playerScores = this.players.map(player => numCorrectLetters(this.guessesForPlayer(player)));
+    const highestScore = max(playerScores);
+
+    return this.players.filter(player => numCorrectLetters(this.guessesForPlayer(player)) === highestScore);
   }
 
   private isFirstCorrect(player: Player): boolean {
@@ -119,6 +130,10 @@ export default class WordRace {
     if (this.anyPlayerWon()) {
       this.gameEnded = true;
     } else {
+      if (this.allPlayersWrong()) {
+        this.playersWithMostCorrectLetters().forEach(player => this.addScore(player, 1));
+      }
+
       this.startNewRoundLater();
     }
 

@@ -1,4 +1,4 @@
-import { every, find } from "lodash";
+import { every, filter, find, max } from "lodash";
 import { CORRECT, INCORRECT, LetterGuess, WRONG_SPOT } from "./constants";
 
 export default function GuessAnalyzer(word: string, answer: string): LetterGuess[] {
@@ -26,4 +26,12 @@ export function isCorrect(guesses: LetterGuess[][]) {
   return !!find(guesses, (guess) => {
     return every(guess, ({ result }) => result === CORRECT);
   });
+}
+
+export function numCorrectLetters(guesses: LetterGuess[][]): number {
+  const correctLettersPerGuess = guesses.map((guess) => {
+    return filter(guess, ({ result }) => result === CORRECT).length
+  });
+
+  return max(correctLettersPerGuess);
 }
