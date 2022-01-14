@@ -3,6 +3,7 @@ import { every, filter, find } from 'lodash';
 import { LetterGuess } from "./constants";
 import GuessAnalyzer, { isCorrect } from './guess_analyzer';
 import { msFromNow } from "../../helpers/time_helpers";
+import { generateWord, wordIsValid } from "../../helpers/word_helpers";
 
 const CATCH_UP_TIMER = 30 * 1000;
 const NEW_ROUND_TIMER = 3 * 1000;
@@ -35,6 +36,7 @@ export default class WordRace {
     if (this.isPlayerFinished(player)) return;
     if (this.roundEndAt && (new Date()) > this.roundEndAt) return;
     if (this.gameEnded) return;
+    if (!wordIsValid(word)) return;
 
     this.guessesForPlayer(player).push(GuessAnalyzer(word, this.currentWord));
     this.scoreGuess(player);
@@ -69,7 +71,8 @@ export default class WordRace {
   }
 
   private setNewWord() {
-    this.currentWord = 'KITTY'.toUpperCase();
+    this.currentWord = generateWord().toUpperCase();
+    console.log('NEW WORD IS ', this.currentWord);
     this.guesses = {};
   }
 

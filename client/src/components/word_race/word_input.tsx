@@ -3,10 +3,13 @@ import { useCallback, useEffect, useState } from 'react';
 import WordGrid from './word_grid';
 import { CORRECT, LetterGuess } from "./constants";
 import { every, find } from 'lodash';
+import AllWordsDictionary from './assets/all_words.json';
 
 const DELETE = 46;
 const BACKSPACE = 8;
 const ENTER = 13;
+
+const AllWords = AllWordsDictionary as any;
 
 type Props = {
   onSubmit: (word: string) => void;
@@ -28,7 +31,7 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
 
     switch (keyCode) {
       case ENTER:
-        if (word.length === wordLength) {
+        if (word.length === wordLength && !!AllWords[word]) {
           onSubmit(word);
           setWord('');
         } else {
