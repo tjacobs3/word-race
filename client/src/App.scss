@@ -6,6 +6,10 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background: rgb(65,65,65);
+  background: radial-gradient(circle, rgb(56,56,56) 0%, rgba(45,45,45,1) 39%, rgba(20,20,20,1) 100%);
+  color: #ffffff;
+  justify-content: center;
 
   .content {
     flex: 1 0 auto;
@@ -13,6 +17,10 @@ body {
 
   .footer {
     flex-shrink: 0;
+  }
+
+  h1 {
+    text-shadow: 2px 2px black;
   }
 }
 

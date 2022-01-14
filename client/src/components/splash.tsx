@@ -44,14 +44,16 @@ export default function Splash() {
 
   return (
     <div className="splash">
-      <div className="content">
-        <SplashHeader errors={errors} />
-        <div className="hero-bg">
-          <Container>
-            <div className="position-relative">
-              <h1 className="mt-0 mb-3 text-center">Join a Room</h1>
+      <Container>
+        <div className="px-4 text-center">
+          <h1 className="display-4 fw-bold">Wordversary.</h1>
+          <div className="col-lg-6 mx-auto">
+            <p className="lead mb-5">Race against your friends to solve word puzzles!</p>
+            <SplashHeader errors={errors} />
+            <div className="mb-5">
+              <h1 className="mt-0 mb-3 text-center">Join a Game</h1>
               <Row className="justify-content-md-center">
-                <Col className="py-2 py-md-0" md={3}>
+                <Col className="py-2 py-md-0" md={4}>
                   <Form.Control
                     type="text"
                     placeholder="Your Name"
@@ -59,7 +61,7 @@ export default function Splash() {
                     onChange={e => setName(e.target.value)}
                   />
                 </Col>
-                <Col className="py-2 py-md-0" md={3}>
+                <Col className="py-2 py-md-0" md={4}>
                   <Form.Control
                     type="text"
                     placeholder="Room Code"
@@ -69,32 +71,33 @@ export default function Splash() {
                 </Col>
                 <Col className="py-2 py-md-0" xs="auto">
                   <Button disabled={creatingOrJoiningGame} variant="light" onClick={joinGame} >
-                    Submit
+                    Join
                   </Button>
                 </Col>
               </Row>
             </div>
-          </Container>
+
+            <div>
+              <h1 className="mt-0 text-center">Or Host a New Game</h1>
+              <Row className="justify-content-md-center">
+                <Col className="py-2 py-md-0" md={4}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Button disabled={creatingOrJoiningGame} variant="light" onClick={createGame} >
+                    Create
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
         </div>
-        <Container className="pb-4">
-          <h2 className="mt-3 text-center py-3">Or Host a New Room</h2>
-          <Row className="justify-content-md-center">
-            <Col className="py-2 py-md-0" md={3}>
-              <Form.Control
-                type="text"
-                placeholder="Your Name"
-                value={name}
-                onChange={e => setName(e.target.value)}
-              />
-            </Col>
-            <Col xs="auto">
-              <Button disabled={creatingOrJoiningGame} variant="dark" onClick={createGame} >
-                Submit
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      </Container>
     </div>
   );
 }

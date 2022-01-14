@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { Col, Container, Form, Row, Button } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useParams } from "react-router-dom";
@@ -27,31 +27,35 @@ export default function JoinGame() {
   }
 
   return (
-    <Fragment>
-      <SplashHeader errors={errors} />
-      <div className="hero-bg">
-        <Container>
-          <img src={logo} alt="poker chip" />
-          <div className="position-relative">
-            <h1 className="mt-0 mb-3 text-center">Joining {id}</h1>
-            <Row className="justify-content-md-center">
-              <Col className="py-2 py-md-0" md={3}>
-                <Form.Control
-                  type="text"
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </Col>
-              <Col className="py-2 py-md-0" xs="auto">
-                <Button disabled={joiningGame} variant="light" onClick={joinGame} >
-                  Submit
-                </Button>
-              </Col>
-            </Row>
+    <div className="splash">
+      <div className="px-4 text-center">
+        <h1 className="display-4 fw-bold">Wordversary.</h1>
+        <div className="col-lg-6 mx-auto">
+          <p className="lead mb-5">Race against your friends to solve word puzzles!</p>
+          <div className="mb-5">
+
+            <SplashHeader errors={errors} />
+            <div>
+              <h1 className="mt-0 mb-3 text-center">Joining {id}</h1>
+              <Row className="justify-content-md-center">
+                <Col className="py-2 py-md-0" md={3}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                  />
+                </Col>
+                <Col className="py-2 py-md-0" xs="auto">
+                  <Button disabled={joiningGame} variant="light" onClick={joinGame} >
+                    Submit
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           </div>
-        </Container>
+        </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
