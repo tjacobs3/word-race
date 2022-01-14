@@ -11,6 +11,7 @@ import './styles.scss';
 import ScoreBoard from "./score_board";
 import CountDown from "./score_board/count_down";
 import PlayerList from "./ui/player_list";
+import GameEnd from "./ui/game_end";
 
 type Props = {
   admin: boolean;
@@ -48,14 +49,24 @@ export default class WordRace extends React.Component<Props, GameState> {
         </div>
       );
     }
+  }
+
+  renderGame() {
+    if (!this.state.game) return;
+
+    if (this.state.game.gameEnded) return <GameEnd gameState={this.state} onStartNewGame={this.startGame} />;
 
     return (
-      <WordInput
-        wordLength={5}
-        previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
-        onSubmit={this.submitGuess}
-      />
-    );
+      <React.Fragment>
+        <ScoreBoard gameState={this.state} />
+        <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
+        <WordInput
+          wordLength={5}
+          previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
+          onSubmit={this.submitGuess}
+        />
+      </React.Fragment>
+    )
   }
 
   render() {
@@ -63,12 +74,7 @@ export default class WordRace extends React.Component<Props, GameState> {
       <div className="game">
         <div className="d-flex justify-content-center flex-column align-items-center mt-5">
           <div className="game-grid position-relative">
-            {this.state.game && (
-              <React.Fragment>
-                <ScoreBoard gameState={this.state} />
-                <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
-              </React.Fragment>
-            )}
+            {this.renderGame()}
             {this.renderControls()}
           </div>
         </div>

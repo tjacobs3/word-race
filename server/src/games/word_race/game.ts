@@ -19,6 +19,7 @@ export default class WordRace {
   roundEndAt: Date | undefined;
   activeTimer: NodeJS.Timeout | undefined;
   gameEnded: boolean;
+  showGameEnd: boolean;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
@@ -33,6 +34,7 @@ export default class WordRace {
     if (word.length !== this.currentWord.length) return;
     if (this.isPlayerFinished(player)) return;
     if (this.roundEndAt && (new Date()) > this.roundEndAt) return;
+    if (this.gameEnded) return;
 
     this.guessesForPlayer(player).push(GuessAnalyzer(word, this.currentWord));
     this.scoreGuess(player);
@@ -51,7 +53,7 @@ export default class WordRace {
     }
 
     if (this.allPlayersFinished()) {
-      this.startNewRoundLater();
+      this.endRound();
     } else if(this.isPlayerFinished(player)) {
       this.endRoundLater();
     }
@@ -103,11 +105,20 @@ export default class WordRace {
     this.activeTimer = setTimeout(callback, timer);
   }
 
+  private anyPlayerWon(): boolean {
+    return !!find(this.players, player => ((this.scores[player.id] || 0) >= POINTS_TO_WIN));
+  }
+
   private endRound() {
     this.nextWordAt = null;
     this.roundEndAt = null;
 
-    this.startNewRoundLater();
+    if (this.anyPlayerWon()) {
+      this.gameEnded = true;
+    } else {
+      this.startNewRoundLater();
+    }
+
     this.onGameAutoUpdated();
   }
 

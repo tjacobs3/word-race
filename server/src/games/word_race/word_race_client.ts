@@ -27,6 +27,8 @@ export default class WordRaceClient extends RoomClient {
 
     this.registerGameAction(socket, ACTION__START_GAME, () => {
       this.performActionOnOwner(player, () => {
+        if (this.game && !this.game.gameEnded) return;
+
         this.game = new WordRace(Object.values(this.players), this.onGameAutoUpdated.bind(this));
       });
     });
@@ -72,7 +74,8 @@ export default class WordRaceClient extends RoomClient {
         numGuesses: this.game.numGuesses,
         scores: this.game.scores,
         nextWordAt: this.game.nextWordAt?.toJSON(),
-        roundEndAt: this.game.roundEndAt?.toJSON()
+        roundEndAt: this.game.roundEndAt?.toJSON(),
+        gameEnded: this.game.gameEnded
       }
     }
 

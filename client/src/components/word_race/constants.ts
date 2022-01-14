@@ -19,6 +19,7 @@ export type GameState = {
     guesses: Guesses,
     scores: { [index: string]: number },
     nextWordAt: string | undefined,
-    roundEndAt: string | undefined
+    roundEndAt: string | undefined,
+    gameEnded: boolean
   };
 }
