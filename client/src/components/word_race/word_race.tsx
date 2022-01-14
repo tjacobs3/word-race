@@ -10,6 +10,7 @@ import WordInput from "./word_input";
 import './styles.scss';
 import ScoreBoard from "./score_board";
 import CountDown from "./score_board/count_down";
+import PlayerList from "./ui/player_list";
 
 type Props = {
   admin: boolean;
@@ -38,7 +39,12 @@ export default class WordRace extends React.Component<Props, GameState> {
   renderControls() {
     if (!this.state.game) {
       return (
-        <button onClick={this.startGame}>Start Game!</button>
+        <div className="text-center">
+          <h5>Waiting for more players to join.</h5>
+          <h5>When you are ready to start the game, press START!</h5>
+          <button className="btn btn-light my-5 start-button" onClick={this.startGame}>START</button>
+          <PlayerList players={this.state.players} />
+        </div>
       );
     }
 
@@ -56,8 +62,12 @@ export default class WordRace extends React.Component<Props, GameState> {
       <div className="game">
         <div className="d-flex justify-content-center flex-column align-items-center mt-5">
           <div className="game-grid position-relative">
-            <ScoreBoard gameState={this.state} />
-            <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
+            {this.state.game && (
+              <React.Fragment>
+                <ScoreBoard gameState={this.state} />
+                <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
+              </React.Fragment>
+            )}
             {this.renderControls()}
           </div>
         </div>
