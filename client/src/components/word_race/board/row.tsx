@@ -3,7 +3,7 @@ import { LetterGuess } from '../constants';
 import Tile from './tile';
 
 type Props = {
-  couldNotSubmit: boolean;
+  couldNotSubmit?: boolean;
   wordLength: number;
   content?: LetterGuess[];
 }

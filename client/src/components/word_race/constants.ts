@@ -7,3 +7,16 @@ export const INCORRECT = 0;
 
 export type LetterGuess = { letter: string, result?: number };
 export type Guesses = { [index: string]: LetterGuess[][]; }
+
+export type Player = {
+  id: string;
+  name: string;
+}
+
+export type GameState = {
+  players: Player[];
+  game?: {
+    guesses: Guesses,
+    scores: { [index: string]: number }
+  };
+}

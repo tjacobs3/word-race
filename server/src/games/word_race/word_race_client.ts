@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import { Server, Socket } from "socket.io";
 
 import Player from '../../rooms/player';
@@ -7,7 +7,8 @@ import WordRace from './game';
 
 import {
   ACTION__START_GAME,
-  ACTION__SUBMIT_GUESS
+  ACTION__SUBMIT_GUESS,
+  LetterGuess
 } from './constants';
 
 export default class WordRaceClient extends RoomClient {
@@ -67,8 +68,9 @@ export default class WordRaceClient extends RoomClient {
 
     if (this.game) {
       serializedGame.game = {
-        guesses: this.game.guesses,
-        numGuesses: this.game.numGuesses
+        guesses: this.cleanGuesses(player),
+        numGuesses: this.game.numGuesses,
+        scores: this.game.scores
       }
     }
 
@@ -77,6 +79,25 @@ export default class WordRaceClient extends RoomClient {
 
   onGameAutoUpdated() {
     this.sendGameState();
+  }
+
+  private cleanGuesses(forPlayer: Player): { [index: string]: LetterGuess[][] } {
+    const cleanedGuesses: { [index: string]: LetterGuess[][] } = {};
+    if (!this.game) return cleanedGuesses;
+
+    this.game.players.map((player) => {
+      cleanedGuesses[player.id] = cloneDeep<LetterGuess[][]>(this.game.guesses[player.id] || []);
+
+      if (forPlayer.id !== player.id) {
+        cleanedGuesses[player.id].forEach((guess) => {
+          guess.forEach((letterGuess) => {
+            letterGuess.letter = '';
+          });
+        });
+      }
+    });
+
+    return cleanedGuesses;
   }
 }
 

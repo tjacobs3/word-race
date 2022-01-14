@@ -22,7 +22,7 @@ export default function WordGrid({ couldNotSubmit, previousGuesses, wordLength }
   }
 
   return (
-    <div className="game-grid">
+    <div>
       {rows}
     </div>
   );

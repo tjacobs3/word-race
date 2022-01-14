@@ -3,12 +3,12 @@ import { Socket } from "socket.io-client";
 import {
     ACTION__START_GAME,
     ACTION__SUBMIT_GUESS,
-    Guesses
+    GameState
   } from "./constants";
 import WordInput from "./word_input";
 
 import './styles.scss';
-
+import ScoreBoard from "./score_board";
 
 type Props = {
   admin: boolean;
@@ -17,18 +17,6 @@ type Props = {
   socket: Socket
 };
 
-type Player = {
-  id: string;
-  name: string;
-}
-
-type GameState = {
-  players: Player[];
-  game?: {
-    guesses: Guesses
-  };
-}
-
 export default class WordRace extends React.Component<Props, GameState> {
   state: GameState = {
     players: []
@@ -36,14 +24,6 @@ export default class WordRace extends React.Component<Props, GameState> {
 
   componentDidMount() {
     this.props.socket.on('gameState', (gameState: GameState) => this.setState(gameState));
-  }
-
-  renderPlayer = (player: Player) => {
-    return (
-      <div key={player.id}>
-        <div><strong>{player.name}</strong></div>
-      </div>
-    )
   }
 
   startGame = () => {
@@ -74,8 +54,10 @@ export default class WordRace extends React.Component<Props, GameState> {
     return (
       <div className="game">
         <div className="d-flex justify-content-center flex-column align-items-center">
-          {this.state.players.map(this.renderPlayer)}
-          {this.renderControls()}
+          <div className="game-grid position-relative">
+            <ScoreBoard gameState={this.state} />
+            {this.renderControls()}
+          </div>
         </div>
       </div>
     );
