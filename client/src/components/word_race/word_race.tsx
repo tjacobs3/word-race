@@ -42,7 +42,8 @@ export default class WordRace extends React.Component<Props, GameState> {
         <div className="text-center">
           <h5>Waiting for more players to join.</h5>
           <h5>When you are ready to start the game, press START!</h5>
-          <button className="btn btn-light my-5 start-button" onClick={this.startGame}>START</button>
+          <div className="alert alert-info my-5">Your room code is <strong>{this.props.roomCode}</strong></div>
+          <button className="btn btn-light me-5 start-button" onClick={this.startGame}>START</button>
           <PlayerList players={this.state.players} />
         </div>
       );

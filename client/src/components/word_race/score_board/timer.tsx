@@ -10,7 +10,7 @@ export default function Timer({ toTime }: Props) {
   const calculateTimeLeft: () => number = () => {
     const currentTime = new Date();
     const difference = toTime.getTime() - currentTime.getTime();
-    return Math.floor((difference / 1000));
+    return Math.max(Math.floor((difference / 1000)), -1);
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
