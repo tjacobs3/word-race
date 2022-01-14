@@ -5,8 +5,6 @@ type Props = {
 }
 
 export default function Timer({ toTime }: Props) {
-  console.log('render')
-
   const calculateTimeLeft: () => number = () => {
     const currentTime = new Date();
     const difference = toTime.getTime() - currentTime.getTime();

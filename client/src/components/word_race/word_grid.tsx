@@ -10,7 +10,7 @@ type Props = {
 export default function WordGrid({ couldNotSubmit, previousGuesses, wordLength }: Props) {
   const rows = [];
 
-  for(let i = 0; i < 5; i++){
+  for(let i = 0; i < 6; i++){
     rows.push(
       <Row
         couldNotSubmit={!!(couldNotSubmit && i === (previousGuesses.length - 1))}

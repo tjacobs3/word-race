@@ -1,26 +1,30 @@
 import Player from "../../rooms/player";
-import { every } from 'lodash';
+import { every, filter, find } from 'lodash';
 import { LetterGuess } from "./constants";
 import GuessAnalyzer, { isCorrect } from './guess_analyzer';
 import { msFromNow } from "../../helpers/time_helpers";
 
 const CATCH_UP_TIMER = 30 * 1000;
 const NEW_ROUND_TIMER = 3 * 1000;
+const POINTS_TO_WIN = 10;
 
 export default class WordRace {
   players: Player[];
   currentWord: string;
   guesses: { [index: string]: LetterGuess[][]; }
-  numGuesses: 5;
+  numGuesses: number;
   scores: { [index: string]: number };
   onGameAutoUpdated: () => void;
   nextWordAt: Date | undefined;
   roundEndAt: Date | undefined;
   activeTimer: NodeJS.Timeout | undefined;
+  gameEnded: boolean;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
     this.scores = {};
+    this.gameEnded = false;
+    this.numGuesses = 6;
     this.setNewWord();
     this.onGameAutoUpdated = onGameAutoUpdated;
   }
@@ -41,13 +45,21 @@ export default class WordRace {
   }
 
   private scoreGuess(player: Player) {
-    if (isCorrect(this.guessesForPlayer(player))) this.addScore(player, 2);
+    if (isCorrect(this.guessesForPlayer(player))) {
+      const pointsScored = this.isFirstCorrect(player) ? 2 : 1;
+      this.addScore(player, pointsScored);
+    }
 
     if (this.allPlayersFinished()) {
       this.startNewRoundLater();
     } else if(this.isPlayerFinished(player)) {
       this.endRoundLater();
     }
+  }
+
+  private isFirstCorrect(player: Player): boolean {
+    const otherPlayers = filter(this.players, otherPlayer => otherPlayer.id !== player.id);
+    return !find(otherPlayers, player => isCorrect(this.guessesForPlayer(player)));
   }
 
   private allPlayersFinished(): boolean {
