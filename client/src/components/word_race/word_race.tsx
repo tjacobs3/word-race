@@ -22,8 +22,11 @@ type Props = {
 
 export default class WordRace extends React.Component<Props, GameState> {
   state: GameState = {
-    players: []
+    players: [],
+    ownerId: ''
   }
+
+  isOwner = () => this.state.ownerId === this.props.playerId;
 
   componentDidMount() {
     this.props.socket.on('gameState', (gameState: GameState) => this.setState(gameState));
@@ -41,10 +44,17 @@ export default class WordRace extends React.Component<Props, GameState> {
     if (!this.state.game) {
       return (
         <div className="text-center">
-          <h5>Waiting for more players to join.</h5>
-          <h5>When you are ready to start the game, press START!</h5>
+          {this.isOwner() && (
+            <React.Fragment>
+              <h5>Waiting for more players to join.</h5>
+              <h5>When you are ready to start the game, press START!</h5>
+            </React.Fragment>
+          )}
+          {!this.isOwner() && (
+            <h5>Waiting for the host to start the game.</h5>
+          )}
           <div className="alert alert-info my-5">Your room code is <strong>{this.props.roomCode}</strong></div>
-          <button className="btn btn-light mb-5 start-button" onClick={this.startGame}>START</button>
+          {this.isOwner() && <button className="btn btn-light mb-5 start-button" onClick={this.startGame}>START</button>}
           <PlayerList players={this.state.players} />
         </div>
       );
@@ -54,7 +64,9 @@ export default class WordRace extends React.Component<Props, GameState> {
   renderGame() {
     if (!this.state.game) return;
 
-    if (this.state.game.gameEnded) return <GameEnd gameState={this.state} onStartNewGame={this.startGame} />;
+    if (this.state.game.gameEnded) {
+      return <GameEnd gameState={this.state} onStartNewGame={this.isOwner() ? this.startGame : undefined} />;
+    }
 
     return (
       <React.Fragment>

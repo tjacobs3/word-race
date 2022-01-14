@@ -74,6 +74,7 @@ export default class WordRaceClient extends RoomClient {
   serializeGameState(player: Player) {
     const serializedGame = {
       players: Object.values(this.players).map(({ id, name }) => ({ id, name })),
+      ownerId: this.ownerId,
       game: null
     }
 

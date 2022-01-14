@@ -15,6 +15,7 @@ export type Player = {
 
 export type GameState = {
   players: Player[];
+  ownerId: string;
   game?: {
     guesses: Guesses,
     scores: { [index: string]: number },
