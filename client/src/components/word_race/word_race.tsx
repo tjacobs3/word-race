@@ -9,6 +9,7 @@ import WordInput from "./word_input";
 
 import './styles.scss';
 import ScoreBoard from "./score_board";
+import CountDown from "./score_board/count_down";
 
 type Props = {
   admin: boolean;
@@ -56,6 +57,7 @@ export default class WordRace extends React.Component<Props, GameState> {
         <div className="d-flex justify-content-center flex-column align-items-center">
           <div className="game-grid position-relative">
             <ScoreBoard gameState={this.state} />
+            <CountDown nextWordAt={this.state.game?.nextWordAt} />
             {this.renderControls()}
           </div>
         </div>

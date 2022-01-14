@@ -70,7 +70,8 @@ export default class WordRaceClient extends RoomClient {
       serializedGame.game = {
         guesses: this.cleanGuesses(player),
         numGuesses: this.game.numGuesses,
-        scores: this.game.scores
+        scores: this.game.scores,
+        nextWordAt: this.game.nextWordAt?.toJSON()
       }
     }
 

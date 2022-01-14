@@ -17,6 +17,7 @@ export type GameState = {
   players: Player[];
   game?: {
     guesses: Guesses,
-    scores: { [index: string]: number }
+    scores: { [index: string]: number },
+    nextWordAt: string | undefined
   };
 }

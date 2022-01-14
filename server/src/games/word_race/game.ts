@@ -13,6 +13,8 @@ export default class WordRace {
   numGuesses: 5;
   scores: { [index: string]: number };
   onGameAutoUpdated: () => void;
+  nextWordAt: Date | undefined;
+  roundEndAt: Date | undefined;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
@@ -38,10 +40,7 @@ export default class WordRace {
   private scoreGuess(player: Player) {
     if (isCorrect(this.guessesForPlayer(player))) this.addScore(player, 2);
 
-    if (this.allPlayersFinished()) setTimeout(() => {
-      this.setNewWord();
-      this.onGameAutoUpdated();
-    }, NEW_ROUND_TIMER)
+    if (this.allPlayersFinished()) this.startNewRoundInTime(NEW_ROUND_TIMER);
   }
 
   private allPlayersFinished(): boolean {
@@ -59,5 +58,21 @@ export default class WordRace {
 
   private addScore(player: Player, points: number) {
     this.scores[player.id] = (this.scores[player.id] || 0) + points;
+  }
+
+  private startNewRoundInTime(timer: number) {
+    const currentDateObj = new Date();
+    const numberOfMlSeconds = currentDateObj.getTime();
+    const addMlSeconds = timer;
+    this.nextWordAt = new Date(numberOfMlSeconds + addMlSeconds);
+
+    setTimeout(this.startNewRound.bind(this), timer);
+  }
+
+  private startNewRound() {
+    this.nextWordAt = null;
+    this.roundEndAt = null;
+    this.setNewWord();
+    this.onGameAutoUpdated();
   }
 }
