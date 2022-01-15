@@ -9,6 +9,18 @@ import WordRaceClient from './src/games/word_race/word_race_client';
 
 const app = express();
 app.enable('trust proxy'); // Needed for heroku
+
+function requireHTTPS(req, res, next) {
+  // The 'x-forwarded-proto' check is for Heroku
+  if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  next();
+}
+
+app.use(requireHTTPS);
+
+
 const origin = process.env.CORS_ORIGIN?.split(',') || 'http://localhost:3000';
 app.use(express.json());
 app.use(cors({ origin, credentials: true }));
