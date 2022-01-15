@@ -1,3 +1,8 @@
+$incorrect-bg: #4c4c4c;
+$wrong-spot-bg: #a28822;
+$correct-bg: #4a9a51;
+$keyboard-unused: #949494;
+
 .game {
   background-color: #222222;
   color: #ffffff;
@@ -19,15 +24,15 @@
     color: #fafafa;
 
     &.wrong-spot {
-      background-color: #a28822;
+      background-color: $wrong-spot-bg;
     }
 
     &.correct {
-      background-color: #4a9a51;
+      background-color: $correct-bg;
     }
 
     &.incorrect {
-      background-color: #4c4c4c;
+      background-color: $incorrect-bg;
     }
   }
 
@@ -131,5 +136,42 @@
   }
   50% {
     transform: translateX(0);
+  }
+}
+
+
+
+.simple-keyboard.hg-theme-default.word-race {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  color: #ffffff;
+  margin: 10px;
+  background: none;
+
+  .hg-button {
+    background-color: $keyboard-unused;
+    text-shadow: 0px 1px #000;
+    border-bottom: 0;
+    height: 50px;
+    font-weight: 600;
+
+    &.hg-activeButton {
+      background-color: darken($keyboard-unused, 10%);
+    }
+
+    &.hg-incorrect {
+      background-color: $incorrect-bg;
+    }
+
+    &.hg-correct {
+      background-color: $correct-bg;
+    }
+
+    &.hg-wrong-spot {
+      background-color: $wrong-spot-bg;
+    }
   }
 }

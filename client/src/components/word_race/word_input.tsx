@@ -1,15 +1,33 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import Keyboard from "react-simple-keyboard";
+import "react-simple-keyboard/build/css/index.css";
 
 import WordGrid from './word_grid';
 import { CORRECT, LetterGuess } from "./constants";
 import { every, find } from 'lodash';
 import AllWordsDictionary from './assets/all_words.json';
+import React from 'react';
+import { guessesToButtonTheme } from './helpers/word_helpers';
 
 const DELETE = 46;
 const BACKSPACE = 8;
 const ENTER = 13;
+const ENTER_STRING = '{ent}';
+const BACKSPACE_STRING = '{backspace}';
 
 const AllWords = AllWordsDictionary as any;
+
+const KEYBOARD_LAYOUT = {
+  default: [
+    "Q W E R T Y U I O P",
+    "A S D F G H J K L",
+    `${ENTER_STRING} Z X C V B N M ${BACKSPACE_STRING}`
+  ]
+}
+const KEYBOARD_DISPLAY = {
+  [ENTER_STRING]: "ENTER",
+  [BACKSPACE_STRING]: "⌫"
+}
 
 type Props = {
   onSubmit: (word: string) => void;
@@ -25,12 +43,13 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
     return every(guess, ({ result }) => result === CORRECT);
   });
 
-  const handleUserKeyPress = useCallback((event:KeyboardEvent) => {
-    const { key, keyCode } = event;
+  const buttonThemes = useMemo(() => guessesToButtonTheme(previousGuesses), [previousGuesses]);
+
+  const handleKey = useCallback((key: string) => {
     if (isFinished) return;
 
-    switch (keyCode) {
-      case ENTER:
+    switch (key) {
+      case ENTER_STRING:
         if (word.length === wordLength && !!AllWords[word]) {
           onSubmit(word);
           setWord('');
@@ -39,18 +58,35 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
           setTimeout(() => setCouldNotSubmit(false), 1000);
         }
         break;
-      case DELETE:
-      case BACKSPACE:
+      case BACKSPACE_STRING:
         if (word.length > 0) setWord(word.substring(0, word.length - 1));
         break;
       default:
         if (word.length >= wordLength) return;
-
-        if(keyCode >= 65 && keyCode <= 90) {
-          setWord(`${word}${key}`);
-        }
+        setWord(`${word}${key}`);
     }
   }, [wordLength, word, onSubmit, isFinished]);
+
+
+  const handleUserKeyPress = useCallback((event:KeyboardEvent) => {
+    const { key, keyCode } = event;
+
+    let keyString;
+
+    switch (keyCode) {
+      case ENTER:
+        keyString = ENTER_STRING;
+        break;
+      case DELETE:
+      case BACKSPACE:
+        keyString = BACKSPACE_STRING;
+        break;
+      default:
+        if(keyCode >= 65 && keyCode <= 90) keyString = key;
+    }
+
+    if (keyString) handleKey(keyString);
+  }, [handleKey]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleUserKeyPress);
@@ -62,10 +98,21 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
   const currentGuess = word.split('').map(letter => ({ letter }));
 
   return (
-    <WordGrid
-      couldNotSubmit={couldNotSubmit}
-      previousGuesses={previousGuesses.concat([currentGuess])}
-      wordLength={wordLength}
-    />
+    <React.Fragment>
+      <WordGrid
+        couldNotSubmit={couldNotSubmit}
+        previousGuesses={previousGuesses.concat([currentGuess])}
+        wordLength={wordLength}
+      />
+      <Keyboard
+        layoutName="default"
+        layout={KEYBOARD_LAYOUT}
+        theme={"hg-theme-default word-race"}
+        buttonTheme={buttonThemes}
+        display={KEYBOARD_DISPLAY}
+        onKeyPress={handleKey}
+      />
+    </React.Fragment>
+
   );
 }

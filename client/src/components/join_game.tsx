@@ -1,9 +1,8 @@
 import { useState } from "react"
-import { Col, Container, Form, Row, Button } from "react-bootstrap"
+import { Col, Form, Row, Button } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useParams } from "react-router-dom";
 
-import logo from '../images/logo.svg';
 import SplashHeader from "./splash_header";
 
 export default function JoinGame() {
