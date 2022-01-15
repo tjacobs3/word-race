@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 import { GameState } from '../constants';
-import { sortBy } from 'lodash';
+import { reverse, sortBy } from 'lodash';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default function GameEnd({ gameState, onStartNewGame }: Props) {
-  const sortedPlayers = sortBy(gameState.players, player => gameState.game?.scores?.[player.id] || 0);
+  const sortedPlayers = reverse(sortBy(gameState.players, player => gameState.game?.scores?.[player.id] || 0));
 
   const playerList = sortedPlayers.map((player, i) => {
     const score = gameState.game?.scores?.[player.id] || 0;
