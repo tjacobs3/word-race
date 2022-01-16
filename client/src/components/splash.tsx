@@ -97,6 +97,15 @@ export default function Splash() {
             </div>
           </div>
         </div>
+        <div className="text-center">
+          <div className="mt-5 intro-text">
+            <h4>How it works:</h4>
+            <p><strong>The first to 10 points wins.</strong> Here is how you can score points -</p>
+            <div><strong>2 points</strong> for solving the word first.</div>
+            <div><strong>1 point</strong> for solving the word in the remaining time (if you didn't solve first).</div>
+            <div><strong>1 point</strong> for having the most correct letters if no one solves the word.</div>
+          </div>
+        </div>
       </Container>
     </div>
   );
