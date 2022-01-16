@@ -45,7 +45,7 @@ export default function Splash() {
   return (
     <div className="splash">
       <Container>
-        <div className="px-4 text-center">
+        <div className="px-4 text-center ">
           <h1 className="display-4 fw-bold">Wordversary.</h1>
           <div className="col-lg-6 mx-auto">
             <p className="lead mb-5">Race against your friends to solve word puzzles!</p>
