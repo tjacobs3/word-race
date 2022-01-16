@@ -39,7 +39,7 @@ export default function GameEnd({ gameState, onStartNewGame }: Props) {
   });
 
   return (
-    <FadeInDiv>
+    <FadeInDiv className="my-5">
       <h4 className="text-center mb-3">Congratulations!</h4>
       {playerList}
       {onStartNewGame && (

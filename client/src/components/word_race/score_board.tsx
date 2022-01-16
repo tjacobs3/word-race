@@ -37,7 +37,7 @@ export default function ScoreBoard({ gameState }: Props) {
 
 
   return (
-    <div className="scoreboard">
+    <div className="scoreboard d-none d-sm-block">
       {players}
     </div>
   );

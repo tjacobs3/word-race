@@ -30,12 +30,14 @@ const KEYBOARD_DISPLAY = {
 }
 
 type Props = {
+  alignChildren?: React.ReactNode;
+  children?: React.ReactNode;
   onSubmit: (word: string) => void;
   wordLength: number;
   previousGuesses: LetterGuess[][];
 }
 
-export default function WordInput({ previousGuesses, wordLength, onSubmit }: Props) {
+export default function WordInput({ alignChildren, children, previousGuesses, wordLength, onSubmit }: Props) {
   const [word, setWord] = useState('');
   const [couldNotSubmit, setCouldNotSubmit] = useState(false);
 
@@ -99,11 +101,17 @@ export default function WordInput({ previousGuesses, wordLength, onSubmit }: Pro
 
   return (
     <React.Fragment>
-      <WordGrid
-        couldNotSubmit={couldNotSubmit}
-        previousGuesses={previousGuesses.concat([currentGuess])}
-        wordLength={wordLength}
-      />
+      <div className="flex-grow-1 position-relative">
+        <div className="position-relative">
+          <WordGrid
+            couldNotSubmit={couldNotSubmit}
+            previousGuesses={previousGuesses.concat([currentGuess])}
+            wordLength={wordLength}
+          />
+          {alignChildren}
+        </div>
+        {children}
+      </div>
       <Keyboard
         layoutName="default"
         layout={KEYBOARD_LAYOUT}

@@ -23,6 +23,6 @@ export default function Timer({ toTime }: Props) {
   }, [toTime]);
 
   return (
-    <div>{timeLeft + 1}</div>
+    <span>{timeLeft + 1}</span>
   );
 }

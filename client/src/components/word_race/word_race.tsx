@@ -13,6 +13,10 @@ import CountDown from "./score_board/count_down";
 import PlayerList from "./ui/player_list";
 import GameEnd from "./ui/game_end";
 import PreviousWords from "./score_board/previous_words";
+import MobileScoreBoard from "./ui/mobile_score_board";
+import MobileCountDown from "./ui/mobile_count_down";
+import MobilePreviousWord from "./ui/mobile_previous_word";
+import { Container } from "react-bootstrap";
 
 type Props = {
   admin: boolean;
@@ -44,7 +48,7 @@ export default class WordRace extends React.Component<Props, GameState> {
   renderControls() {
     if (!this.state.game) {
       return (
-        <div className="text-center">
+        <Container className="text-center my-5">
           {this.isOwner() && (
             <React.Fragment>
               <h5>Waiting for more players to join.</h5>
@@ -54,10 +58,14 @@ export default class WordRace extends React.Component<Props, GameState> {
           {!this.isOwner() && (
             <h5>Waiting for the host to start the game.</h5>
           )}
-          <div className="alert alert-info my-5">Your room code is <strong>{this.props.roomCode}</strong></div>
+          <div>
+            <div className="alert alert-info my-5 d-inline-block">
+              Your room code is <strong>{this.props.roomCode}</strong>
+            </div>
+          </div>
           {this.isOwner() && <button className="btn btn-light mb-5 start-button" onClick={this.startGame}>START</button>}
           <PlayerList players={this.state.players} />
-        </div>
+        </Container>
       );
     }
   }
@@ -69,29 +77,42 @@ export default class WordRace extends React.Component<Props, GameState> {
       return <GameEnd gameState={this.state} onStartNewGame={this.isOwner() ? this.startGame : undefined} />;
     }
 
-    return (
-      <React.Fragment>
+    const alignChildren = (
+      <div className="d-none d-sm-block">
         <ScoreBoard gameState={this.state} />
         <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
         <PreviousWords previousWords={this.state.game.previousWords} />
+      </div>
+    );
+
+    return (
+      <React.Fragment>
         <WordInput
+          alignChildren={alignChildren}
           wordLength={5}
           previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
           onSubmit={this.submitGuess}
-        />
+        >
+          <div className="d-flex d-sm-none justify-content-between">
+            <div>
+              <MobileScoreBoard gameState={this.state} playerId={this.props.playerId} />
+            </div>
+            <div>
+              <MobilePreviousWord previousWords={this.state.game.previousWords} />
+              <MobileCountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
+            </div>
+          </div>
+
+        </WordInput>
       </React.Fragment>
     )
   }
 
   render() {
     return (
-      <div className="game">
-        <div className="d-flex justify-content-center flex-column align-items-center mt-5">
-          <div className="game-grid position-relative">
-            {this.renderGame()}
-            {this.renderControls()}
-          </div>
-        </div>
+      <div className="game game-grid flex-column justify-content-start align-items-center">
+        {this.renderGame()}
+        {this.renderControls()}
       </div>
     );
   }
