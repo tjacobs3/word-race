@@ -20,7 +20,7 @@ export default function ScoreBoard({ gameState }: Props) {
     }
 
     return (
-      <div className="player-card my-2" key={player.id}>
+      <div className="player-card mb-2" key={player.id}>
         <Score score={gameState.game?.scores?.[player.id] || 0} />
         <div className="player-info">
           <div className="player-name">

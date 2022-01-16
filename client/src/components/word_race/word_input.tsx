@@ -104,7 +104,7 @@ export default function WordInput({ alignChildren, children, previousGuesses, wo
 
   return (
     <React.Fragment>
-      <div className="flex-grow-1 position-relative">
+      <div className="flex-grow-1 position-relative mt-2">
         <div className="position-relative">
           <WordGrid
             couldNotSubmit={couldNotSubmit}

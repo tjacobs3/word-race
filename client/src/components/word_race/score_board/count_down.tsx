@@ -28,7 +28,7 @@ export default function CountDown({ nextWordAt, roundEndAt }: Props) {
   const text = roundEndAt ? 'Round Ends In:' : 'Next Word In:';
 
   return (
-    <FadeInDiv className="countdown my-2">
+    <FadeInDiv className="countdown mb-2">
       <div>{text}</div>
       <div className="time-left">
         <Timer toTime={nextWordAtDate || roundEndAtDate || new Date()} />
