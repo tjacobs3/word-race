@@ -69,7 +69,7 @@ export default function Splash() {
                     onChange={e => setRoomCode(e.target.value)}
                   />
                 </Col>
-                <Col className="py-2 py-md-0" xs="auto">
+                <Col className="py-2 py-md-0 text-center" sm="auto">
                   <Button disabled={creatingOrJoiningGame} variant="light" onClick={joinGame} >
                     Join
                   </Button>
@@ -88,7 +88,7 @@ export default function Splash() {
                     onChange={e => setName(e.target.value)}
                   />
                 </Col>
-                <Col xs="auto">
+                <Col className="text-center" sm="auto">
                   <Button disabled={creatingOrJoiningGame} variant="light" onClick={createGame} >
                     Create
                   </Button>

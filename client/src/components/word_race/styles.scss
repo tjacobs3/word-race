@@ -147,8 +147,9 @@ $keyboard-unused: #949494;
   left: 50%;
   transform: translateX(-50%);
   width: 500px;
+  max-width: 100%;
   color: #ffffff;
-  margin: 10px;
+  padding: 10px;
   background: none;
 
   .hg-button {
