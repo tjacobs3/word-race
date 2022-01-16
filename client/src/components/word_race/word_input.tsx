@@ -52,6 +52,7 @@ export default function WordInput({ alignChildren, children, previousGuesses, wo
 
     switch (key) {
       case ENTER_STRING:
+
         if (word.length === wordLength && !!AllWords[word]) {
           onSubmit(word);
           setWord('');
@@ -65,7 +66,7 @@ export default function WordInput({ alignChildren, children, previousGuesses, wo
         break;
       default:
         if (word.length >= wordLength) return;
-        setWord(`${word}${key}`);
+        setWord(`${word}${key}`.toLowerCase());
     }
   }, [wordLength, word, onSubmit, isFinished]);
 
@@ -86,6 +87,8 @@ export default function WordInput({ alignChildren, children, previousGuesses, wo
       default:
         if(keyCode >= 65 && keyCode <= 90) keyString = key;
     }
+
+
 
     if (keyString) handleKey(keyString);
   }, [handleKey]);
