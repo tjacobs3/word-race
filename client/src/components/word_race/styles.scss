@@ -66,6 +66,15 @@ $keyboard-unused: #949494;
   }
 }
 
+@include media-breakpoint-down(sm) {
+  .game-grid {
+    .cell {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+
 .previous-words {
   position: absolute;
   right: 0;
@@ -140,14 +149,13 @@ $keyboard-unused: #949494;
   }
 }
 
-
-
 .simple-keyboard.hg-theme-default.word-race {
   width: 500px;
   max-width: 100%;
   color: #ffffff;
   padding: 10px;
   background: none;
+  z-index: 3;
 
   .hg-button {
     background-color: $keyboard-unused;

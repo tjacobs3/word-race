@@ -8,7 +8,6 @@ import {
   } from "./constants";
 import WordInput from "./word_input";
 
-import './styles.scss';
 import ScoreBoard from "./score_board";
 import CountDown from "./score_board/count_down";
 import PlayerList from "./ui/player_list";

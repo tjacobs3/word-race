@@ -6,8 +6,6 @@ import { useHistory } from "react-router-dom";
 
 import WordRace from './word_race';
 
-import '../room.scss';
-
 const Game:FunctionComponent = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();

@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 
 import Splash from './components/splash';
-import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
 import Game from './components/word_race/game';
 import JoinGame from './components/join_game';
