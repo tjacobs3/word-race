@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash';
 import Row from './board/row';
 import { GameState, LetterGuess } from './constants';
+import { findBestGuess } from './helpers/word_helpers';
 import Score from './score_board/score';
 
 type Props = {
@@ -13,10 +14,12 @@ export default function ScoreBoard({ gameState }: Props) {
     let lastGuess: LetterGuess[] | undefined;
 
     if (playerGuesses) {
-      lastGuess = cloneDeep(playerGuesses[playerGuesses.length - 1] || []);
-      lastGuess.forEach((guess) => {
-        guess.letter = '';
-      });
+      if (gameState.game?.nextWordAt) {
+        lastGuess = findBestGuess(playerGuesses);
+      } else {
+        lastGuess = cloneDeep(playerGuesses[playerGuesses.length - 1] || []);
+        lastGuess.forEach((guess) => guess.letter = '');
+      }
     }
 
     return (

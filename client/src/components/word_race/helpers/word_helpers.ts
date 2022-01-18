@@ -1,4 +1,4 @@
-import { each, filter } from "lodash";
+import { each, filter, max } from "lodash";
 import { CORRECT, INCORRECT, LetterGuess, WRONG_SPOT } from "../constants";
 
 function letterResults(guesses: LetterGuess[][]): { [index: string]: number | undefined } {
@@ -54,17 +54,21 @@ export function guessesToButtonTheme(guesses: LetterGuess[][]): { class: string,
   return filter([incorrectButtons, wrongSpotButtons, correctButtons], theme => theme.buttons.length > 0);
 }
 
+export function numMatching(guess: LetterGuess[], result: number): number {
+  let count = 0;
+  guess.forEach((letter) => {
+    if (letter.result === result) count += 1;
+  })
 
+  return count;
+}
 
+export function findBestGuess(guesses: LetterGuess[][]): LetterGuess[] {
+  const maxCorrect = max(guesses.map(guess => numMatching(guess, CORRECT)));
+  const maxCorrectGuesses = guesses.filter(guess => numMatching(guess, CORRECT) === maxCorrect);
 
+  const maxWrongSpot = max(maxCorrectGuesses.map(guess => numMatching(guess, WRONG_SPOT)));
+  const maxWrongSpotGuesses = maxCorrectGuesses.filter(guess => numMatching(guess, WRONG_SPOT) === maxWrongSpot);
 
-// buttonTheme: [
-//   {
-//     class: "hg-red",
-//     buttons: "Q W E R T Y q w e r t y"
-//   },
-//   {
-//     class: "hg-highlight",
-//     buttons: "Q q"
-//   }
-// ]
+  return maxWrongSpotGuesses[maxWrongSpotGuesses.length - 1] || [];
+}

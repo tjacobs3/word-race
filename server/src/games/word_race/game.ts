@@ -6,7 +6,7 @@ import { msFromNow } from "../../helpers/time_helpers";
 import { generateWord, wordIsValid } from "../../helpers/word_helpers";
 
 const CATCH_UP_TIMER = 30 * 1000;
-const NEW_ROUND_TIMER = 3 * 1000;
+const NEW_ROUND_TIMER = 10 * 1000;
 const POINTS_TO_WIN = 10;
 
 export default class WordRace {
