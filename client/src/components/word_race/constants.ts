@@ -13,15 +13,31 @@ export type Player = {
   name: string;
 }
 
-export type GameState = {
+interface BaseWordRaceGameState {
+  guesses: Guesses,
+  scores: { [index: string]: number },
+  gameEnded: boolean,
+  previousWords: string[],
+}
+
+interface WordRaceGameState extends BaseWordRaceGameState {
+  nextWordAt: Date | undefined,
+  roundEndAt: Date | undefined,
+}
+
+interface IncomingWordRaceGameState extends BaseWordRaceGameState {
+  nextWordIn: number | undefined,
+  roundEndIn: number | undefined,
+}
+
+export interface GameState {
   players: Player[];
   ownerId: string;
-  game?: {
-    guesses: Guesses,
-    scores: { [index: string]: number },
-    nextWordAt: string | undefined,
-    roundEndAt: string | undefined,
-    gameEnded: boolean,
-    previousWords: string[],
-  };
+  game?: WordRaceGameState;
+}
+
+export interface IncomingGameState {
+  players: Player[];
+  ownerId: string;
+  game?: IncomingWordRaceGameState;
 }

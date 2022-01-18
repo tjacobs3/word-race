@@ -9,28 +9,19 @@ const FadeInDiv = styled.div`
 `;
 
 type Props = {
-  nextWordAt?: string;
-  roundEndAt?: string;
+  nextWordAt?: Date;
+  roundEndAt?: Date;
 }
 
 export default function MobileCountDown({ nextWordAt, roundEndAt }: Props) {
-  let nextWordAtDate, roundEndAtDate;
-
-  try {
-    if (nextWordAt) nextWordAtDate = new Date(nextWordAt);
-    if (roundEndAt) roundEndAtDate = new Date(roundEndAt);
-  } catch (error) {
-
-  }
-
-  if (!nextWordAtDate && !roundEndAtDate) return <div></div>;
+  if (!nextWordAt && !roundEndAt) return <div></div>;
 
   const text = roundEndAt ? 'Round Ends In: ' : 'Next Word In: ';
 
   return (
     <FadeInDiv className="text-end">
       {text}
-      <Timer toTime={nextWordAtDate || roundEndAtDate || new Date()} />
+      <Timer toTime={nextWordAt || roundEndAt || new Date()} />
     </FadeInDiv>
   );
 }

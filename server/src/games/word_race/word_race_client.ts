@@ -83,11 +83,13 @@ export default class WordRaceClient extends RoomClient {
         guesses: this.cleanGuesses(player),
         numGuesses: this.game.numGuesses,
         scores: this.game.scores,
-        nextWordAt: this.game.nextWordAt?.toJSON(),
-        roundEndAt: this.game.roundEndAt?.toJSON(),
         gameEnded: this.game.gameEnded,
         previousWords: this.game.previousWords
       }
+
+      const currentTime = (new Date()).getTime();
+      if (this.game.nextWordAt) serializedGame.game.nextWordIn = this.game.nextWordAt.getTime() - currentTime;
+      if (this.game.roundEndAt) serializedGame.game.roundEndIn = this.game.roundEndAt.getTime() - currentTime;
     }
 
     return serializedGame;

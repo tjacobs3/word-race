@@ -3,7 +3,8 @@ import { Socket } from "socket.io-client";
 import {
     ACTION__START_GAME,
     ACTION__SUBMIT_GUESS,
-    GameState
+    GameState,
+    IncomingGameState
   } from "./constants";
 import WordInput from "./word_input";
 
@@ -34,7 +35,23 @@ export default class WordRace extends React.Component<Props, GameState> {
   isOwner = () => this.state.ownerId === this.props.playerId;
 
   componentDidMount() {
-    this.props.socket.on('gameState', (gameState: GameState) => this.setState(gameState));
+    this.props.socket.on('gameState', (gameState: IncomingGameState) => {
+      if (!gameState.game) return this.setState(gameState as GameState);
+
+      let nextWordAt, roundEndAt;
+
+      if (gameState.game?.nextWordIn) nextWordAt = new Date(Date.now() + gameState.game.nextWordIn);
+      if (gameState.game?.roundEndIn) roundEndAt = new Date(Date.now() + gameState.game.roundEndIn);
+
+      this.setState({
+        ...gameState,
+        game: {
+          ...gameState.game,
+          nextWordAt,
+          roundEndAt
+        }
+      });
+    });
   }
 
   startGame = () => {

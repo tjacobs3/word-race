@@ -9,21 +9,12 @@ const FadeInDiv = styled.div`
 `;
 
 type Props = {
-  nextWordAt?: string;
-  roundEndAt?: string;
+  nextWordAt?: Date;
+  roundEndAt?: Date;
 }
 
 export default function CountDown({ nextWordAt, roundEndAt }: Props) {
-  let nextWordAtDate, roundEndAtDate;
-
-  try {
-    if (nextWordAt) nextWordAtDate = new Date(nextWordAt);
-    if (roundEndAt) roundEndAtDate = new Date(roundEndAt);
-  } catch (error) {
-
-  }
-
-  if (!nextWordAtDate && !roundEndAtDate) return <div></div>;
+  if (!nextWordAt && !roundEndAt) return <div></div>;
 
   const text = roundEndAt ? 'Round Ends In:' : 'Next Word In:';
 
@@ -31,7 +22,7 @@ export default function CountDown({ nextWordAt, roundEndAt }: Props) {
     <FadeInDiv className="countdown mb-2">
       <div>{text}</div>
       <div className="time-left">
-        <Timer toTime={nextWordAtDate || roundEndAtDate || new Date()} />
+        <Timer toTime={nextWordAt || roundEndAt || new Date()} />
       </div>
 
     </FadeInDiv>
