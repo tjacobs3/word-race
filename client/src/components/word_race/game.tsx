@@ -58,7 +58,7 @@ const Game:FunctionComponent = () => {
           />
         </React.Fragment>
       )}
-      {!socket && <h1>Connecting ...</h1>}
+      {!socket && <h1 className="text-center">Connecting ...</h1>}
     </div>
   )
 }

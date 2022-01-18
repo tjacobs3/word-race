@@ -3,11 +3,14 @@ $wrong-spot-bg: #a28822;
 $correct-bg: #4a9a51;
 $keyboard-unused: #949494;
 
+body, html, #root {
+  height: 100%;
+}
+
 .game {
-  background-color: #222222;
   color: #ffffff;
-  min-height: 100vh;
-  width: 100vw;
+  min-height: 100%;
+  width: 100%;
   position: absolute;
   display: flex;
 }
