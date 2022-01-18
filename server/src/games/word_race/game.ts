@@ -22,6 +22,7 @@ export default class WordRace {
   gameEnded: boolean;
   showGameEnd: boolean;
   previousWords: string[];
+  roundNumber: number;
 
   constructor(players: Player[], onGameAutoUpdated: () => void) {
     this.players = players;
@@ -31,6 +32,7 @@ export default class WordRace {
     this.previousWords = [];
     this.setNewWord();
     this.onGameAutoUpdated = onGameAutoUpdated;
+    this.roundNumber = 0;
   }
 
   guess(player: Player, word: string) {
@@ -146,6 +148,7 @@ export default class WordRace {
   private startNewRound() {
     this.nextWordAt = null;
     this.roundEndAt = null;
+    this.roundNumber += 1;
     this.setNewWord();
     this.onGameAutoUpdated();
   }

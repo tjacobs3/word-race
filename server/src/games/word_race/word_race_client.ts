@@ -84,7 +84,8 @@ export default class WordRaceClient extends RoomClient {
         numGuesses: this.game.numGuesses,
         scores: this.game.scores,
         gameEnded: this.game.gameEnded,
-        previousWords: this.game.previousWords
+        previousWords: this.game.previousWords,
+        roundNumber: this.game.roundNumber
       }
 
       const currentTime = (new Date()).getTime();

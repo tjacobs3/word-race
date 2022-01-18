@@ -107,7 +107,8 @@ export default class WordRace extends React.Component<Props, GameState> {
         <WordInput
           alignChildren={alignChildren}
           wordLength={5}
-          previousGuesses={this.state.game?.guesses[this.props.playerId] || []}
+          previousGuesses={this.state.game.guesses[this.props.playerId] || []}
+          roundNumber={this.state.game.roundNumber}
           onSubmit={this.submitGuess}
         >
           <div className="d-flex d-sm-none justify-content-between">

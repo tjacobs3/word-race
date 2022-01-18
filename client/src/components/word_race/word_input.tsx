@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
+import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import WordGrid from './word_grid';
 import { CORRECT, LetterGuess } from "./constants";
@@ -35,9 +36,12 @@ type Props = {
   onSubmit: (word: string) => void;
   wordLength: number;
   previousGuesses: LetterGuess[][];
+  roundNumber: number;
 }
 
-export default function WordInput({ alignChildren, children, previousGuesses, wordLength, onSubmit }: Props) {
+export default function WordInput({
+  alignChildren, children, previousGuesses, wordLength, roundNumber, onSubmit
+}: Props) {
   const [word, setWord] = useState('');
   const [couldNotSubmit, setCouldNotSubmit] = useState(false);
 
@@ -106,11 +110,19 @@ export default function WordInput({ alignChildren, children, previousGuesses, wo
     <React.Fragment>
       <div className="flex-grow-1 position-relative mt-2">
         <div className="position-relative">
-          <WordGrid
-            couldNotSubmit={couldNotSubmit}
-            previousGuesses={previousGuesses.concat([currentGuess])}
-            wordLength={wordLength}
-          />
+          <SwitchTransition>
+            <CSSTransition
+              key={roundNumber}
+              addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
+              classNames='fade'
+            >
+              <WordGrid
+                couldNotSubmit={couldNotSubmit}
+                previousGuesses={previousGuesses.concat([currentGuess])}
+                wordLength={wordLength}
+              />
+            </CSSTransition>
+          </SwitchTransition>
           {alignChildren}
         </div>
         {children}

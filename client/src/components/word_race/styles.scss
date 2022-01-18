@@ -173,3 +173,26 @@ $keyboard-unused: #949494;
     }
   }
 }
+
+
+
+.fade-enter{
+  opacity: 0;
+  transform: translateY(-40px);
+}
+.fade-exit{
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-enter-active{
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit-active{
+  opacity: 0;
+  transform: translateY(-40px);
+}
+.fade-enter-active,
+.fade-exit-active{
+  transition: opacity 250ms, transform 250ms;
+}

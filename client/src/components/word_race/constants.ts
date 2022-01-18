@@ -18,6 +18,7 @@ interface BaseWordRaceGameState {
   scores: { [index: string]: number },
   gameEnded: boolean,
   previousWords: string[],
+  roundNumber: number
 }
 
 interface WordRaceGameState extends BaseWordRaceGameState {
