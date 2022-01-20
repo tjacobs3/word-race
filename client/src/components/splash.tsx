@@ -45,7 +45,7 @@ export default function Splash() {
   const quickPlay = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/quick_play`, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/quick_play`, {}, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
