@@ -32,6 +32,7 @@ const KEYBOARD_DISPLAY = {
 
 type Props = {
   alignChildren?: React.ReactNode;
+  freeze: boolean;
   children?: React.ReactNode;
   onSubmit: (word: string) => void;
   wordLength: number;
@@ -40,12 +41,12 @@ type Props = {
 }
 
 export default function WordInput({
-  alignChildren, children, previousGuesses, wordLength, roundNumber, onSubmit
+  alignChildren, children, freeze, previousGuesses, wordLength, roundNumber, onSubmit
 }: Props) {
   const [word, setWord] = useState('');
   const [couldNotSubmit, setCouldNotSubmit] = useState(false);
 
-  const isFinished = !!find(previousGuesses, (guess) => {
+  const isFinished = freeze || !!find(previousGuesses, (guess) => {
     return every(guess, ({ result }) => result === CORRECT);
   });
 
@@ -92,8 +93,6 @@ export default function WordInput({
         if(keyCode >= 65 && keyCode <= 90) keyString = key;
     }
 
-
-
     if (keyString) handleKey(keyString);
   }, [handleKey]);
 
@@ -103,6 +102,10 @@ export default function WordInput({
         window.removeEventListener("keydown", handleUserKeyPress);
     };
   }, [handleUserKeyPress]);
+
+  useEffect(() => {
+    setWord('');
+  }, [roundNumber]);
 
   const currentGuess = word.split('').map(letter => ({ letter }));
 

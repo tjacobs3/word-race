@@ -103,6 +103,7 @@ export default class WordRace extends React.Component<Props, GameState> {
       <React.Fragment>
         <WordInput
           alignChildren={alignChildren}
+          freeze={!!this.state.game.nextWordAt}
           wordLength={5}
           previousGuesses={this.state.game.guesses[this.props.playerId] || []}
           roundNumber={this.state.game.roundNumber}

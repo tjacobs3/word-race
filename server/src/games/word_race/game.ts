@@ -38,7 +38,7 @@ export default class WordRace {
   guess(player: Player, word: string) {
     if (word.length !== this.currentWord.length) return;
     if (this.isPlayerFinished(player)) return;
-    if (this.roundEndAt && (new Date()) > this.roundEndAt) return;
+    if ((this.roundEndAt && (new Date()) > this.roundEndAt) || this.nextWordAt) return;
     if (this.gameEnded) return;
     if (!wordIsValid(word)) return;
 
