@@ -52,3 +52,20 @@ body {
     transform: rotate(-0.1turn);
   }
 }
+
+.play-button {
+  background-color: #4c4c4c;
+  border: 1px solid #c6c6c6;
+  color: white;
+  line-height: 1.5;
+  padding: 0.8em 1.5em;
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  font-size: 2rem;
+  transition: background-color 0.3s, text-shadow 0.3s;
+
+  &:hover {
+    background-color: #4a9a51;
+    text-shadow: 1px 1px rgb(9, 44, 5);
+  }
+}

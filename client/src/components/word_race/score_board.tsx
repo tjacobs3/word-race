@@ -6,9 +6,10 @@ import Score from './score_board/score';
 
 type Props = {
   gameState: GameState;
+  playerId: string;
 }
 
-export default function ScoreBoard({ gameState }: Props) {
+export default function ScoreBoard({ gameState, playerId }: Props) {
   const players = gameState.players.map((player) => {
     const playerGuesses = gameState.game?.guesses?.[player.id];
     let lastGuess: LetterGuess[] | undefined;
@@ -23,7 +24,7 @@ export default function ScoreBoard({ gameState }: Props) {
     }
 
     return (
-      <div className="player-card mb-2" key={player.id}>
+      <div className={`player-card mb-2 ${playerId === player.id ? 'highlight' : ''}`} key={player.id}>
         <Score score={gameState.game?.scores?.[player.id] || 0} />
         <div className="player-info">
           <div className="player-name">

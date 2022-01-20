@@ -12,7 +12,7 @@ export default class RoomClient {
   ownerId: string;
   players: { [index: string]: Player; }
 
-  constructor(server: Server) {
+  constructor(server: Server, quickPlay?: boolean) {
     this.server = server;
     this.roomCode = nanoid();
     this.ownerId = null;
@@ -27,8 +27,8 @@ export default class RoomClient {
     return this.players[playerId].name;
   }
 
-  join(name: string): Player {
-    const player = new Player(name);
+  join(name?: string): Player {
+    const player = new Player(name || '');
     this.players[player.id] = player;
 
     if (Object.keys(this.players).length === 1) this.ownerId = player.id;

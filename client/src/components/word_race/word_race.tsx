@@ -17,6 +17,7 @@ import MobileScoreBoard from "./ui/mobile_score_board";
 import MobileCountDown from "./ui/mobile_count_down";
 import MobilePreviousWord from "./ui/mobile_previous_word";
 import { Container } from "react-bootstrap";
+import GameStartHeader from "./ui/game_start_header";
 
 type Props = {
   admin: boolean;
@@ -35,21 +36,27 @@ export default class WordRace extends React.Component<Props, GameState> {
 
   componentDidMount() {
     this.props.socket.on('gameState', (gameState: IncomingGameState) => {
-      if (!gameState.game) return this.setState(gameState as GameState);
+      const nextState: GameState = {
+        players: gameState.players,
+        ownerId: gameState.ownerId
+      };
 
-      let nextWordAt, roundEndAt;
+      if (gameState.gameStartIn) nextState.gameStartAt = new Date(Date.now() + gameState.gameStartIn);
 
-      if (gameState.game?.nextWordIn) nextWordAt = new Date(Date.now() + gameState.game.nextWordIn);
-      if (gameState.game?.roundEndIn) roundEndAt = new Date(Date.now() + gameState.game.roundEndIn);
+      if (gameState.game) {
+        let nextWordAt, roundEndAt;
 
-      this.setState({
-        ...gameState,
-        game: {
+        if (gameState.game?.nextWordIn) nextWordAt = new Date(Date.now() + gameState.game.nextWordIn);
+        if (gameState.game?.roundEndIn) roundEndAt = new Date(Date.now() + gameState.game.roundEndIn);
+
+        nextState.game = {
           ...gameState.game,
           nextWordAt,
           roundEndAt
         }
-      });
+      }
+
+      this.setState(nextState);
     });
   }
 
@@ -65,22 +72,13 @@ export default class WordRace extends React.Component<Props, GameState> {
     if (!this.state.game) {
       return (
         <Container className="text-center my-5">
-          {this.isOwner() && (
-            <React.Fragment>
-              <h5>Waiting for more players to join.</h5>
-              <h5>When you are ready to start the game, press START!</h5>
-            </React.Fragment>
-          )}
-          {!this.isOwner() && (
-            <h5>Waiting for the host to start the game.</h5>
-          )}
-          <div>
-            <div className="alert alert-info my-5 d-inline-block">
-              Your room code is <strong>{this.props.roomCode}</strong>
-            </div>
-          </div>
+          <GameStartHeader
+            isOwner={this.isOwner()}
+            roomCode={this.props.roomCode}
+            gameStartAt={this.state.gameStartAt}
+          />
           {this.isOwner() && <button className="btn btn-light mb-5 start-button" onClick={this.startGame}>START</button>}
-          <PlayerList players={this.state.players} />
+          <PlayerList players={this.state.players} playerId={this.props.playerId} />
         </Container>
       );
     }
@@ -95,7 +93,7 @@ export default class WordRace extends React.Component<Props, GameState> {
 
     const alignChildren = (
       <div className="d-none d-sm-block">
-        <ScoreBoard gameState={this.state} />
+        <ScoreBoard gameState={this.state} playerId={this.props.playerId} />
         <CountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
         <PreviousWords previousWords={this.state.game.previousWords} />
       </div>

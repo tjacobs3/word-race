@@ -9,13 +9,18 @@ const FadeInDiv = styled.h3`
 `;
 
 type Props = {
-  players: Player[]
+  players: Player[];
+  playerId: string;
 }
 
-export default function PlayerList({ players }: Props) {
+export default function PlayerList({ players, playerId }: Props) {
   const playerList = players.map((player) => {
     return (
-      <FadeInDiv key={player.id}>{player.name}</FadeInDiv>
+      <FadeInDiv key={player.id} className="my-3">
+        <span className={player.id === playerId ? 'highlight-player' : ''}>
+          {player.name}
+        </span>
+      </FadeInDiv>
     )
   });
 

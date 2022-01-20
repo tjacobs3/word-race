@@ -6,6 +6,7 @@ import cookieSession from 'cookie-session';
 
 import RoomClient from './src/rooms/room_client';
 import WordRaceClient from './src/games/word_race/word_race_client';
+import { find } from 'lodash';
 
 const app = express();
 app.enable('trust proxy'); // Needed for heroku
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(cookieSession(cookieOptions));
 
 const games: { [index: string]: RoomClient; } = {};
+let quickPlayGames: RoomClient[] = [];
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -41,11 +43,16 @@ function terminateGameLater(roomCode) {
   setTimeout(() => terminateGame(roomCode), 10000);
 }
 
+function findAvailableQuickPlayGame(): RoomClient | undefined {
+  return find<RoomClient>(quickPlayGames, roomClient => roomClient.canJoin() === true);
+}
+
 function terminateGame(roomCode) {
   if (!games[roomCode]) return;
 
   if (games[roomCode].canTerminateGame()) {
     delete games[roomCode];
+    quickPlayGames = quickPlayGames.filter(room => room.roomCode === roomCode);
   }
 }
 
@@ -119,6 +126,25 @@ app.post('/join', (req: Request, res: Response) => {
   }
 
   res.json({ playerId: player.id, secret: player.secret });
+});
+
+app.post('/quick_play', (req: Request, res: Response) => {
+  let room = findAvailableQuickPlayGame();
+
+  if (!room) {
+    room = new WordRaceClient(io, true);
+    games[room.roomCode] = room;
+    quickPlayGames.push(room);
+  }
+
+  req.session.games = (req.session.games || {});
+
+  if (!req.session.games[room.roomCode]) {
+    const player = room.join();
+    req.session.games[room.roomCode] = player.id;
+  }
+
+  res.json({ roomCode: room.roomCode, other: req.session.games });
 });
 
 io

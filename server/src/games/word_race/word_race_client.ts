@@ -4,6 +4,7 @@ import { Server, Socket } from "socket.io";
 import Player from '../../rooms/player';
 import RoomClient from '../../rooms/room_client';
 import WordRace from './game';
+import { msFromNow } from "../../helpers/time_helpers";
 
 import {
   ACTION__START_GAME,
@@ -11,13 +12,33 @@ import {
   LetterGuess
 } from './constants';
 
-const MAX_PLAYERS = 6;
+const MAX_PLAYERS: number = 6;
+const START_GAME_TIMER = 60 * 1000;
 
 export default class WordRaceClient extends RoomClient {
   game?: WordRace;
+  quickPlay: boolean;
+  gameStartAt?: Date;
+  activeTimer: NodeJS.Timeout | undefined;
 
-  constructor(server: Server) {
-    super(server);
+  constructor(server: Server, quickPlay?: boolean) {
+    super(server, quickPlay);
+
+    this.quickPlay = !!quickPlay;
+
+    if (this.quickPlay) {
+      this.gameStartAt = msFromNow(START_GAME_TIMER);
+      this.activeTimer = setTimeout(this.automaticallyStartGame.bind(this), START_GAME_TIMER);
+    }
+  }
+
+  join(name?: string): Player {
+    const nameToUse = name ? name : `Player ${Object.keys(this.players).length + 1}`;
+
+    const player = super.join(nameToUse);
+    if (this.quickPlay) this.ownerId = null;
+
+    return player;
   }
 
   canJoin(): boolean | string {
@@ -27,19 +48,24 @@ export default class WordRaceClient extends RoomClient {
     return true;
   }
 
+  automaticallyStartGame() {
+    this.startGame();
+    this.sendGameState();
+  }
+
+  startGame() {
+    if (this.game && !this.game.gameEnded) return;
+
+    this.game = new WordRace(Object.values(this.players), this.onGameAutoUpdated.bind(this));
+  }
+
   connect(socket: Socket, playerId: string) {
     super.connect(socket, playerId);
 
     const player = this.players[playerId];
 
-    this.sendGameState();
-
     this.registerGameAction(socket, ACTION__START_GAME, () => {
-      this.performActionOnOwner(player, () => {
-        if (this.game && !this.game.gameEnded) return;
-
-        this.game = new WordRace(Object.values(this.players), this.onGameAutoUpdated.bind(this));
-      });
+      this.performActionOnOwner(player, this.startGame.bind(this));
     });
 
     this.registerGameAction(socket, ACTION__SUBMIT_GUESS, (guess) => {
@@ -49,6 +75,13 @@ export default class WordRaceClient extends RoomClient {
     socket.on('disconnect', () => {
       this.sendGameState();
     });
+
+    if (Object.keys(this.players).length >= MAX_PLAYERS) {
+      clearTimeout(this.activeTimer);
+      this.startGame();
+    }
+
+    this.sendGameState();
   }
 
   registerGameAction(socket, action, callback) {
@@ -75,8 +108,11 @@ export default class WordRaceClient extends RoomClient {
     const serializedGame = {
       players: Object.values(this.players).map(({ id, name }) => ({ id, name })),
       ownerId: this.ownerId,
-      game: null
+      game: null,
+      gameStartIn: null
     }
+
+    if (this.gameStartAt) serializedGame.gameStartIn = this.gameStartAt.getTime() - Date.now();
 
     if (this.game) {
       serializedGame.game = {

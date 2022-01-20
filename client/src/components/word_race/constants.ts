@@ -34,11 +34,13 @@ interface IncomingWordRaceGameState extends BaseWordRaceGameState {
 export interface GameState {
   players: Player[];
   ownerId: string;
+  gameStartAt?: Date;
   game?: WordRaceGameState;
 }
 
 export interface IncomingGameState {
   players: Player[];
   ownerId: string;
+  gameStartIn?: number;
   game?: IncomingWordRaceGameState;
 }

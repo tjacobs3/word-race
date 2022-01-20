@@ -42,16 +42,31 @@ export default function Splash() {
       .catch(handleError);
   }
 
+  const quickPlay = () => {
+    setCreatingOrJoiningGame(true);
+
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/quick_play`, { withCredentials: true })
+      .then((response) => history.push(`/game/${response.data.roomCode}`))
+      .catch(handleError);
+  }
+
   return (
     <div className="splash">
       <Container>
         <div className="px-4 text-center ">
           <h1 className="display-4 fw-bold">Wordversary.</h1>
           <div className="col-lg-6 mx-auto">
-            <p className="lead mb-5">Race against your friends to solve word puzzles!</p>
+            <p className="lead">Race against your friends to solve word puzzles!</p>
             <SplashHeader errors={errors} />
+            <button
+              className="play-button draw-border my-5"
+              disabled={creatingOrJoiningGame}
+              onClick={quickPlay}
+            >
+              Quick Play
+            </button>
             <div className="mb-5">
-              <h1 className="mt-0 mb-3 text-center">Join a Game</h1>
+              <h2 className="mt-0 mb-3 text-center">Join a Game</h2>
               <Row className="justify-content-md-center">
                 <Col className="py-2 py-md-0" md={4}>
                   <Form.Control
@@ -78,7 +93,7 @@ export default function Splash() {
             </div>
 
             <div>
-              <h1 className="mt-0 text-center">Or Host a New Game</h1>
+              <h2 className="mt-0 text-center">Or Host a New Game</h2>
               <Row className="justify-content-md-center">
                 <Col className="py-2 py-md-0" md={4}>
                   <Form.Control
