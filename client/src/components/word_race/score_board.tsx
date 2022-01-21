@@ -11,6 +11,8 @@ type Props = {
 
 export default function ScoreBoard({ gameState, playerId }: Props) {
   const players = gameState.players.map((player) => {
+    if (!player.name) return null;
+
     const playerGuesses = gameState.game?.guesses?.[player.id];
     let lastGuess: LetterGuess[] | undefined;
 

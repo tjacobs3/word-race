@@ -15,7 +15,6 @@ export default function Splash() {
   }
 
   const [creatingOrJoiningGame, setCreatingOrJoiningGame] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
   const [roomCode, setRoomCode] = useState<string>('');
   const [errors, setErrors] = useState<string[]>(initialErrors);
 
@@ -29,7 +28,7 @@ export default function Splash() {
   const createGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/create`, { name }, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/create`, { }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
@@ -37,7 +36,7 @@ export default function Splash() {
   const joinGame = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { name, roomCode }, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/join_room`, { roomCode }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
@@ -45,7 +44,7 @@ export default function Splash() {
   const quickPlay = () => {
     setCreatingOrJoiningGame(true);
 
-    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/quick_play`, {}, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_ROOT || ''}/quick_play`, { }, { withCredentials: true })
       .then((response) => history.push(`/game/${response.data.roomCode}`))
       .catch(handleError);
   }
@@ -71,14 +70,6 @@ export default function Splash() {
                 <Col className="py-2 py-md-0" md={4}>
                   <Form.Control
                     type="text"
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                  />
-                </Col>
-                <Col className="py-2 py-md-0" md={4}>
-                  <Form.Control
-                    type="text"
                     placeholder="Room Code"
                     value={roomCode}
                     onChange={e => setRoomCode(e.target.value)}
@@ -93,19 +84,11 @@ export default function Splash() {
             </div>
 
             <div>
-              <h2 className="mt-0 text-center">Or Host a New Game</h2>
+              <h2 className="mt-0 text-center">Or Host a Private Game</h2>
               <Row className="justify-content-md-center">
-                <Col className="py-2 py-md-0" md={4}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                  />
-                </Col>
                 <Col className="text-center" sm="auto">
                   <Button disabled={creatingOrJoiningGame} variant="light" onClick={createGame} >
-                    Create
+                    Host Game
                   </Button>
                 </Col>
               </Row>

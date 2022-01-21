@@ -7,6 +7,7 @@ import WordRace from './game';
 import { msFromNow } from "../../helpers/time_helpers";
 
 import {
+  ACTION__SET_NAME,
   ACTION__START_GAME,
   ACTION__SUBMIT_GUESS,
   LetterGuess
@@ -32,10 +33,8 @@ export default class WordRaceClient extends RoomClient {
     }
   }
 
-  join(name?: string): Player {
-    const nameToUse = name ? name : `Player ${Object.keys(this.players).length + 1}`;
-
-    const player = super.join(nameToUse);
+  join(): Player {
+    const player = super.join();
     if (this.quickPlay) this.ownerId = null;
 
     return player;
@@ -63,6 +62,7 @@ export default class WordRaceClient extends RoomClient {
     super.connect(socket, playerId);
 
     const player = this.players[playerId];
+    const playerIndex = Object.keys(this.players).indexOf(playerId) || 0;
 
     this.registerGameAction(socket, ACTION__START_GAME, () => {
       this.performActionOnOwner(player, this.startGame.bind(this));
@@ -71,6 +71,29 @@ export default class WordRaceClient extends RoomClient {
     this.registerGameAction(socket, ACTION__SUBMIT_GUESS, (guess) => {
       this.game?.guess(player, guess);
     })
+
+    socket.on(ACTION__SET_NAME, (name: string | undefined, callback: (response: { error: string | undefined }) => void) => {
+      let error: string | undefined;
+      let nameToUse: string | undefined;
+
+      if (!name || name === '') {
+        nameToUse = `Player ${playerIndex + 1}`;
+      } else {
+        const validCheck = this.checkNameValidity(name);
+        if (typeof validCheck === 'string') {
+          error = validCheck;
+        } else {
+          nameToUse = name;
+        }
+      }
+
+      if (nameToUse) {
+        player.name = nameToUse;
+        this.sendGameState();
+      }
+
+      callback({ error });
+    });
 
     socket.on('disconnect', () => {
       this.sendGameState();

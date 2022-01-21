@@ -18,6 +18,8 @@ import MobileCountDown from "./ui/mobile_count_down";
 import MobilePreviousWord from "./ui/mobile_previous_word";
 import { Container } from "react-bootstrap";
 import GameStartHeader from "./ui/game_start_header";
+import { find } from "lodash";
+import NameInput from "./name_input";
 
 type Props = {
   admin: boolean;
@@ -58,6 +60,14 @@ export default class WordRace extends React.Component<Props, GameState> {
 
       this.setState(nextState);
     });
+  }
+
+  playerForSelf = () => {
+    return find(this.state.players, player => player.id === this.props.playerId);
+  }
+
+  hasName = () => {
+    return !!this.playerForSelf()?.name
   }
 
   startGame = () => {
@@ -118,13 +128,16 @@ export default class WordRace extends React.Component<Props, GameState> {
               <MobileCountDown nextWordAt={this.state.game?.nextWordAt} roundEndAt={this.state.game?.roundEndAt} />
             </div>
           </div>
-
         </WordInput>
       </React.Fragment>
     )
   }
 
   render() {
+    if (!this.hasName()) {
+      return <NameInput roomCode={this.props.roomCode} socket={this.props.socket} />;
+    }
+
     return (
       <div className="game game-grid flex-column justify-content-start align-items-center">
         {this.renderGame()}

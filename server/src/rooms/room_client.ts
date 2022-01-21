@@ -27,8 +27,8 @@ export default class RoomClient {
     return this.players[playerId].name;
   }
 
-  join(name?: string): Player {
-    const player = new Player(name || '');
+  join(): Player {
+    const player = new Player();
     this.players[player.id] = player;
 
     if (Object.keys(this.players).length === 1) this.ownerId = player.id;
@@ -83,14 +83,12 @@ export default class RoomClient {
   }
 
   checkNameValidity(name: string): boolean | string {
-    if (some(this.players, (player) => player.name === name)) return "Name is already taken";
-
     return RoomClient.checkNameValidity(name);
   }
 
   static checkNameValidity(name: string): boolean | string {
-    if (name.length < 3) return "Name is too short";
-    if (name.length > 12) return "Name is too long";
+    if (name.length < 2) return "Name is too short";
+    if (name.length > 10) return "Name is too long";
 
     return true;
   }

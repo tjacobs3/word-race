@@ -75,13 +75,7 @@ app.post('/join_room', (req: Request, res: Response) => {
     return;
   }
 
-  const nameValidity = game.checkNameValidity(req.body.name || '');
-  if (typeof nameValidity === 'string') {
-    res.status(422).json({ errors: [nameValidity]});
-    return;
-  }
-
-  const player = game.join(req.body.name);
+  const player = game.join();
 
   req.session.games = (req.session.games || {});
   req.session.games[game.roomCode] = player.id;
@@ -90,17 +84,10 @@ app.post('/join_room', (req: Request, res: Response) => {
 });
 
 app.post('/create', (req: Request, res: Response) => {
-  const nameValidity = RoomClient.checkNameValidity(req.body.name);
-
-  if (typeof nameValidity === 'string') {
-    res.status(422).json({ errors: [nameValidity]});
-    return;
-  }
-
   const room = new WordRaceClient(io);
   games[room.roomCode] = room;
 
-  const player = room.join(req.body.name);
+  const player = room.join();
 
   req.session.games = (req.session.games || {});
   req.session.games[room.roomCode] = player.id;

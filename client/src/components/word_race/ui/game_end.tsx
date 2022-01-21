@@ -21,6 +21,8 @@ export default function GameEnd({ gameState, onStartNewGame }: Props) {
   const sortedPlayers = reverse(sortBy(gameState.players, player => gameState.game?.scores?.[player.id] || 0));
 
   const playerList = sortedPlayers.map((player, i) => {
+    if (!player.name) return null;
+
     const score = gameState.game?.scores?.[player.id] || 0;
 
     return (

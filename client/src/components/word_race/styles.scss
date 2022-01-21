@@ -20,6 +20,17 @@ body, html, #root {
   padding: 5px 10px;
 }
 
+.name-input {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
+
+  .hint {
+    color: #ffffff;
+  }
+}
+
 .game-grid {
   .cell {
     display: inline-flex;
