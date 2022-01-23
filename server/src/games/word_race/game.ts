@@ -132,13 +132,13 @@ export default class WordRace {
     this.roundEndAt = null;
     this.previousWords.push(this.currentWord);
 
+    if (this.allPlayersWrong()) {
+      this.playersWithMostCorrectLetters().forEach(player => this.addScore(player, 1));
+    }
+
     if (this.anyPlayerWon()) {
       this.gameEnded = true;
     } else {
-      if (this.allPlayersWrong()) {
-        this.playersWithMostCorrectLetters().forEach(player => this.addScore(player, 1));
-      }
-
       this.startNewRoundLater();
     }
 
