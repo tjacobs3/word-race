@@ -1,7 +1,11 @@
 import { useState } from "react"
-import { Col, Container, Form, Row, Button } from "react-bootstrap"
+import { Col, Container, Form, Row, Button, Modal } from "react-bootstrap"
 import axios, { AxiosError } from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 import SplashHeader from "./splash_header";
 
@@ -17,6 +21,7 @@ export default function Splash() {
   const [creatingOrJoiningGame, setCreatingOrJoiningGame] = useState<boolean>(false);
   const [roomCode, setRoomCode] = useState<string>('');
   const [errors, setErrors] = useState<string[]>(initialErrors);
+  const [showAbout, setShowAbout] = useState(false);
 
   const handleError = (error: Error | AxiosError) => {
     if (axios.isAxiosError(error))  {
@@ -55,7 +60,7 @@ export default function Splash() {
         <div className="px-4 text-center ">
           <h1 className="display-4 fw-bold">Wordversary.</h1>
           <div className="col-lg-6 mx-auto">
-            <p className="lead">Race against your friends to solve word puzzles!</p>
+            <p className="lead">The head to head WORDLE competition!</p>
             <SplashHeader errors={errors} />
             <button
               className="play-button draw-border my-5"
@@ -104,6 +109,27 @@ export default function Splash() {
             <div><strong>1 point</strong> for having the most correct letters if no one solves the word.</div>
           </div>
         </div>
+        <div className="text-center mt-3">
+          <Button variant="link" onClick={() => setShowAbout(true)}>
+            <FontAwesomeIcon className="me-2" icon={faQuestionCircle} />
+            About
+          </Button>
+        </div>
+        <Modal centered show={showAbout} onHide={() => setShowAbout(false)}>
+          <Modal.Body className="text-center">
+            <h4>Built By</h4>
+            <a href="https://www.linkedin.com/in/thomas-jacobs-8b1b5021/">
+              <FontAwesomeIcon className="me-2" icon={faLinkedin} />
+            </a>
+            <a href="https://github.com/tjacobs3">
+              <FontAwesomeIcon className="me-2" icon={faGithub} />
+              Thomas Jacobs
+            </a>
+            <h5 className="mt-3">
+              Thank you to the original <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a>
+            </h5>
+          </Modal.Body>
+        </Modal>
       </Container>
     </div>
   );

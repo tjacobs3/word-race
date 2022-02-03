@@ -28,7 +28,6 @@ export default function NameInput({ roomCode, socket }: Props) {
 
   return (
     <Container className="name-input">
-      <h5>You are joining <strong>{roomCode}</strong>.</h5>
       {error && (
         <div className="text-center my-5">
           <Alert className="d-inline-block" variant="info">{error}</Alert>

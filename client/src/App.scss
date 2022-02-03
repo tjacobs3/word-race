@@ -69,3 +69,17 @@ body {
     text-shadow: 1px 1px rgb(9, 44, 5);
   }
 }
+
+.modal-content {
+  background-color: #404040;
+  color: #ffffff;
+  border: 1px solid black;
+}
+
+a, .btn-link {
+  color: #baffc4;
+
+  &:hover, &:active {
+    color: #3df357;
+  }
+}
