@@ -52,7 +52,7 @@ function terminateGame(roomCode) {
 
   if (games[roomCode].canTerminateGame()) {
     delete games[roomCode];
-    quickPlayGames = quickPlayGames.filter(room => room.roomCode === roomCode);
+    quickPlayGames = quickPlayGames.filter(room => room.roomCode !== roomCode);
   }
 }
 
